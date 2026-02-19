@@ -14,6 +14,7 @@ interface TimerState {
 interface TimerActions {
   startFasting: (fastingHours: number) => void;
   stopFasting: (completed: boolean, planId: string) => void;
+  deleteRecord: (recordId: string) => void;
   reset: () => void;
 }
 
@@ -81,6 +82,12 @@ export const useTimerStore = create<TimerStore>()(
           currentRecordId: null,
           records: [...records, newRecord],
         });
+      },
+
+      /** 기록 삭제 */
+      deleteRecord: (recordId: string) => {
+        const { records } = get();
+        set({ records: records.filter((r) => r.id !== recordId) });
       },
 
       /** 상태 초기화 */

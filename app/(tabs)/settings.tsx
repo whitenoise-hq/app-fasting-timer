@@ -4,7 +4,6 @@ import {
   SettingSection,
   SettingToggle,
   PlanSelector,
-  TimePicker,
   DangerButton,
 } from '../../src/components/settings';
 import { useSettingsStore } from '../../src/stores/settingsStore';
@@ -17,11 +16,9 @@ export default function SettingsScreen() {
     selectedPlanId,
     customFastingHours,
     customEatingHours,
-    eatingStartTime,
     notifications,
     setSelectedPlan,
     setCustomHours,
-    setEatingStartTime,
     setNotification,
     resetSettings,
   } = useSettingsStore();
@@ -57,11 +54,6 @@ export default function SettingsScreen() {
             onSelectPlan={setSelectedPlan}
             onSetCustomHours={setCustomHours}
           />
-        </SettingSection>
-
-        {/* 식사 시간 */}
-        <SettingSection title="식사 시간">
-          <TimePicker value={eatingStartTime} onValueChange={setEatingStartTime} />
         </SettingSection>
 
         {/* 알림 설정 */}
@@ -106,9 +98,6 @@ export default function SettingsScreen() {
         <View className="items-center py-6">
           <Text className="font-sans text-sm text-text-muted">
             단식 타이머 v{APP_VERSION}
-          </Text>
-          <Text className="font-sans text-xs text-text-muted mt-1">
-            Made with ❤️ for healthy lifestyle
           </Text>
         </View>
       </ScrollView>

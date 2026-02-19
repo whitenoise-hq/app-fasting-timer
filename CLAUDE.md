@@ -222,7 +222,6 @@ interface UserSettings {
   selectedPlanId: string;
   customFastingHours: number | null;
   customEatingHours: number | null;
-  eatingStartTime: string;  // "11:00"
   notifications: NotificationSettings;
 }
 
@@ -261,7 +260,6 @@ interface FastingStats {
 
 ### 4. 설정 — `app/(tabs)/settings.tsx`
 - 단식 플랜 선택 (프리셋 4종 + 커스텀 직접 입력)
-- 식사 시작 시간 설정
 - 알림 종류별 ON/OFF
 - 데이터 초기화
 - 앱 정보/버전

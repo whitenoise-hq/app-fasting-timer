@@ -2,6 +2,9 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, Pressable, AppState, AppStateStatus } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Circle, Path } from 'react-native-svg';
+import { useTimerStore } from '../../src/stores/timerStore';
+import { useSettingsStore } from '../../src/stores/settingsStore';
+import { getPlanById } from '../../src/constants/plans';
 import { THEME, ACCENT } from '../../src/constants/colors';
 
 /** 밀리초를 시:분:초 형태로 변환 */
@@ -27,34 +30,37 @@ function formatTime(date: Date): string {
   return `${period} ${displayHours}:${minutes.toString().padStart(2, '0')}`;
 }
 
-type TimerStatus = 'idle' | 'fasting';
-
 export default function HomeScreen() {
-  const [status, setStatus] = useState<TimerStatus>('idle');
-  const [startTime, setStartTime] = useState<Date | null>(null);
-  const [targetEndTime, setTargetEndTime] = useState<Date | null>(null);
+  const { status, startTime, targetEndTime, startFasting, stopFasting } = useTimerStore();
+  const { selectedPlanId, customFastingHours } = useSettingsStore();
+
   const [remainingMs, setRemainingMs] = useState(0);
   const [progress, setProgress] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const fastingHours = 16;
-  const planName = '16:8';
-  const planLabel = '가장 권장';
+  // 플랜 정보 도출
+  const plan = getPlanById(selectedPlanId);
+  const fastingHours = plan?.fastingHours ?? customFastingHours ?? 16;
+  const planName = plan?.name ?? `${customFastingHours ?? 16}:${24 - (customFastingHours ?? 16)}`;
+  const planLabel = plan?.label ?? '커스텀';
+
+  const isFasting = status === 'fasting';
+  const statusText = isFasting ? '단식 중' : '대기 중';
 
   /** 타이머 상태 업데이트 */
   const updateTimerState = useCallback(() => {
-    if (status !== 'fasting' || !startTime || !targetEndTime) {
-      return;
-    }
+    if (!isFasting || !startTime || !targetEndTime) return;
 
     const now = Date.now();
-    const remaining = Math.max(0, targetEndTime.getTime() - now);
-    const total = targetEndTime.getTime() - startTime.getTime();
-    const elapsed = now - startTime.getTime();
+    const start = new Date(startTime).getTime();
+    const target = new Date(targetEndTime).getTime();
+    const remaining = Math.max(0, target - now);
+    const total = target - start;
+    const elapsed = now - start;
 
     setRemainingMs(remaining);
     setProgress(Math.min(1, Math.max(0, elapsed / total)));
-  }, [status, startTime, targetEndTime]);
+  }, [isFasting, startTime, targetEndTime]);
 
   /** 앱 상태 변화 감지 */
   useEffect(() => {
@@ -69,7 +75,7 @@ export default function HomeScreen() {
 
   /** 타이머 인터벌 */
   useEffect(() => {
-    if (status === 'fasting') {
+    if (isFasting) {
       updateTimerState();
       intervalRef.current = setInterval(updateTimerState, 1000);
     } else {
@@ -85,26 +91,18 @@ export default function HomeScreen() {
         clearInterval(intervalRef.current);
       }
     };
-  }, [status, updateTimerState]);
+  }, [isFasting, updateTimerState]);
 
   /** 단식 시작 */
   const handleStart = () => {
-    const now = new Date();
-    const target = new Date(now.getTime() + fastingHours * 60 * 60 * 1000);
-    setStartTime(now);
-    setTargetEndTime(target);
-    setStatus('fasting');
+    startFasting(fastingHours);
   };
 
   /** 단식 종료 */
   const handleStop = () => {
-    setStatus('idle');
-    setStartTime(null);
-    setTargetEndTime(null);
+    const completed = remainingMs <= 0;
+    stopFasting(completed, selectedPlanId);
   };
-
-  const isFasting = status === 'fasting';
-  const statusText = isFasting ? '단식 중' : '대기 중';
 
   // 원형 타이머 계산
   const size = 280;
@@ -195,14 +193,14 @@ export default function HomeScreen() {
                 <View className="items-center flex-1">
                   <Text className="font-sans text-xs text-text-muted mb-1">시작</Text>
                   <Text className="text-base font-heading text-text-primary">
-                    {formatTime(startTime)}
+                    {formatTime(new Date(startTime))}
                   </Text>
                 </View>
                 <View className="w-px bg-border-custom mx-4" />
                 <View className="items-center flex-1">
                   <Text className="font-sans text-xs text-text-muted mb-1">목표</Text>
                   <Text className="text-base font-heading text-text-primary">
-                    {formatTime(targetEndTime)}
+                    {formatTime(new Date(targetEndTime))}
                   </Text>
                 </View>
               </View>
@@ -216,9 +214,10 @@ export default function HomeScreen() {
           {/* 버튼 */}
           <Pressable
             onPress={isFasting ? handleStop : handleStart}
-            className="w-full py-4 rounded-full items-center justify-center bg-btn-primary active:opacity-80"
+            className="w-full py-4 rounded-full items-center justify-center active:opacity-80"
+            style={{ backgroundColor: isFasting ? ACCENT.red : THEME.btnPrimary }}
           >
-            <Text className="text-btn-text text-lg font-heading">
+            <Text className="text-white text-lg font-heading">
               {isFasting ? '단식 종료' : '단식 시작'}
             </Text>
           </Pressable>

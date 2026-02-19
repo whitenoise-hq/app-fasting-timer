@@ -32,7 +32,6 @@ export interface UserSettings {
   selectedPlanId: string;
   customFastingHours: number | null;
   customEatingHours: number | null;
-  eatingStartTime: string;
   notifications: NotificationSettings;
 }
 

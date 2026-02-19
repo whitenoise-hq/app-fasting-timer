@@ -7,7 +7,7 @@ import {
   isToday,
   WEEKDAY_NAMES,
 } from '../../utils/date';
-import { THEME } from '../../constants/colors';
+import { THEME, ACCENT } from '../../constants/colors';
 
 interface CalendarProps {
   /** 현재 표시 연도 */
@@ -15,7 +15,7 @@ interface CalendarProps {
   /** 현재 표시 월 (0-11) */
   month: number;
   /** 선택된 날짜 키 */
-  selectedDate: string | null;
+  selectedDate: string;
   /** 날짜 선택 핸들러 */
   onSelectDate: (dateKey: string) => void;
   /** 이전 달 이동 */
@@ -72,35 +72,50 @@ export default function Calendar({
       <Pressable
         key={dateKey}
         onPress={() => onSelectDate(dateKey)}
-        className="flex-1 aspect-square items-center justify-center"
+        style={{ flex: 1, height: 48, alignItems: 'center', justifyContent: 'center' }}
       >
         <View
-          className={`w-10 h-10 items-center justify-center rounded-full ${
-            isSelected
-              ? 'bg-btn-primary'
+          style={{
+            width: 36,
+            height: 36,
+            borderRadius: 18,
+            overflow: 'hidden',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: isSelected
+              ? THEME.btnPrimary
               : isTodayDate
-              ? 'bg-background'
-              : ''
-          }`}
+              ? THEME.background
+              : 'transparent',
+          }}
         >
           <Text
-            className={`font-sans text-base ${
-              isSelected
-                ? 'text-btn-text'
+            style={{
+              fontFamily: 'NanumBarunpen-Regular',
+              fontSize: 14,
+              color: isSelected
+                ? THEME.btnText
                 : isTodayDate
-                ? 'text-text-primary'
-                : 'text-text-secondary'
-            }`}
+                ? THEME.textPrimary
+                : THEME.textSecondary,
+            }}
           >
             {day}
           </Text>
         </View>
         {/* 기록 표시 점 */}
-        {hasAnyRecord && !isSelected && (
+        {hasAnyRecord && (
           <View
-            className={`w-1.5 h-1.5 rounded-full mt-0.5 ${
-              hasCompleted ? 'bg-accent-green' : 'bg-accent-red'
-            }`}
+            style={{
+              position: 'absolute',
+              bottom: -2,
+              width: 5,
+              height: 5,
+              borderRadius: 3,
+              backgroundColor: hasCompleted
+                ? ACCENT.green
+                : ACCENT.red,
+            }}
           />
         )}
       </Pressable>

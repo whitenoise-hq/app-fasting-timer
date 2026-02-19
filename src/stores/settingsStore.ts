@@ -8,14 +8,12 @@ interface SettingsState {
   selectedPlanId: string;
   customFastingHours: number | null;
   customEatingHours: number | null;
-  eatingStartTime: string;
   notifications: NotificationSettings;
 }
 
 interface SettingsActions {
   setSelectedPlan: (planId: string) => void;
   setCustomHours: (fasting: number, eating: number) => void;
-  setEatingStartTime: (time: string) => void;
   setNotification: (key: keyof NotificationSettings, value: boolean) => void;
   resetSettings: () => void;
 }
@@ -26,7 +24,6 @@ const initialState: SettingsState = {
   selectedPlanId: DEFAULT_PLAN_ID,
   customFastingHours: null,
   customEatingHours: null,
-  eatingStartTime: '11:00',
   notifications: {
     fastingStart: true,
     fastingEnd: true,
@@ -50,9 +47,6 @@ export const useSettingsStore = create<SettingsStore>()(
           customFastingHours: fasting,
           customEatingHours: eating,
         }),
-
-      /** 식사 시작 시간 설정 */
-      setEatingStartTime: (time: string) => set({ eatingStartTime: time }),
 
       /** 알림 설정 */
       setNotification: (key: keyof NotificationSettings, value: boolean) =>

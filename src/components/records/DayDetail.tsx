@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, Pressable, Alert } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import type { FastingRecord } from '../../types';
 import { ACCENT } from '../../constants/colors';
@@ -8,6 +8,8 @@ interface DayDetailProps {
   dateKey: string;
   /** 해당 날짜의 기록 목록 */
   records: FastingRecord[];
+  /** 기록 삭제 핸들러 */
+  onDeleteRecord: (recordId: string) => void;
 }
 
 /** 분을 시간:분 형태로 변환 */
@@ -36,7 +38,19 @@ function formatDateDisplay(dateKey: string): string {
 }
 
 /** 선택된 날짜의 상세 기록 표시 */
-export default function DayDetail({ dateKey, records }: DayDetailProps) {
+export default function DayDetail({ dateKey, records, onDeleteRecord }: DayDetailProps) {
+  /** 삭제 확인 Alert */
+  const handleDelete = (recordId: string) => {
+    Alert.alert(
+      '기록 삭제',
+      '이 기록을 삭제하시겠습니까?',
+      [
+        { text: '취소', style: 'cancel' },
+        { text: '삭제', style: 'destructive', onPress: () => onDeleteRecord(recordId) },
+      ],
+    );
+  };
+
   if (records.length === 0) {
     return (
       <View className="bg-surface rounded-2xl p-4 items-center">
@@ -58,8 +72,8 @@ export default function DayDetail({ dateKey, records }: DayDetailProps) {
           key={record.id}
           className={`${index > 0 ? 'mt-3 pt-3 border-t border-border-custom' : ''}`}
         >
-          {/* 성공/실패 배지 */}
-          <View className="flex-row items-center mb-2">
+          {/* 상단: 성공/실패 배지 + 삭제 버튼 */}
+          <View className="flex-row items-center justify-between mb-2">
             <View
               className={`flex-row items-center px-2 py-1 rounded-full ${
                 record.completed
@@ -98,6 +112,23 @@ export default function DayDetail({ dateKey, records }: DayDetailProps) {
                 {record.completed ? '목표 달성' : '중도 종료'}
               </Text>
             </View>
+
+            {/* 삭제 버튼 */}
+            <Pressable
+              onPress={() => handleDelete(record.id)}
+              className="flex-row items-center px-2 py-1 rounded-full active:bg-accent-red/10"
+            >
+              <Svg width={14} height={14} viewBox="0 0 24 24" fill="none">
+                <Path
+                  d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"
+                  stroke={ACCENT.red}
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </Svg>
+              <Text className="font-sans text-xs text-accent-red ml-1">삭제</Text>
+            </Pressable>
           </View>
 
           {/* 시간 정보 */}

@@ -29,6 +29,8 @@ interface UseFastingRecordsReturn {
   hasCompletedRecord: (dateKey: string) => boolean;
   /** 특정 날짜에 기록이 있는지 확인 */
   hasRecord: (dateKey: string) => boolean;
+  /** 기록 삭제 */
+  deleteRecord: (recordId: string) => void;
 }
 
 /**
@@ -36,6 +38,7 @@ interface UseFastingRecordsReturn {
  */
 export function useFastingRecords(): UseFastingRecordsReturn {
   const records = useTimerStore((state) => state.records);
+  const deleteRecord = useTimerStore((state) => state.deleteRecord);
 
   /** 날짜별 기록 맵 생성 */
   const recordsByDate = useMemo(() => {
@@ -186,5 +189,6 @@ export function useFastingRecords(): UseFastingRecordsReturn {
     getRecordsByDate,
     hasCompletedRecord,
     hasRecord,
+    deleteRecord,
   };
 }
