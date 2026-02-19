@@ -1,6 +1,8 @@
 import { Tabs } from 'expo-router';
 import { View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import { useSettingsStore } from '../../src/stores/settingsStore';
+import { getThemeColors } from '../../src/constants/colors';
 
 interface TabIconProps {
   color: string;
@@ -71,15 +73,18 @@ function SettingsIcon({ color, size }: TabIconProps) {
 }
 
 export default function TabLayout() {
+  const darkMode = useSettingsStore((state) => state.darkMode);
+  const theme = getThemeColors(darkMode);
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#22c55e',
-        tabBarInactiveTintColor: '#9ca3af',
+        tabBarActiveTintColor: theme.textPrimary,
+        tabBarInactiveTintColor: theme.textMuted,
         tabBarStyle: {
-          backgroundColor: '#ffffff',
-          borderTopColor: '#e5e7eb',
+          backgroundColor: theme.surface,
+          borderTopColor: theme.border,
           height: 60,
           paddingBottom: 8,
           paddingTop: 8,

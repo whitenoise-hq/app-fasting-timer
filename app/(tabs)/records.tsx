@@ -51,7 +51,7 @@ export default function RecordsScreen() {
   // 기록이 없으면 빈 상태 표시
   if (records.length === 0) {
     return (
-      <SafeAreaView className="flex-1 bg-gray-50 dark:bg-gray-900">
+      <SafeAreaView className="flex-1 bg-background dark:bg-background-dark">
         <EmptyState />
       </SafeAreaView>
     );
@@ -61,7 +61,7 @@ export default function RecordsScreen() {
   const selectedRecords = selectedDate ? getRecordsByDate(selectedDate) : [];
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50 dark:bg-gray-900">
+    <SafeAreaView className="flex-1 bg-background dark:bg-background-dark">
       <ScrollView
         className="flex-1"
         contentContainerStyle={{ padding: 16, gap: 16 }}

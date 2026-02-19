@@ -1,32 +1,41 @@
-/** 앱 기본 색상 */
-export const COLORS = {
-  primary: {
-    50: '#f0fdf4',
-    100: '#dcfce7',
-    200: '#bbf7d0',
-    300: '#86efac',
-    400: '#4ade80',
-    500: '#22c55e',
-    600: '#16a34a',
-    700: '#15803d',
-    800: '#166534',
-    900: '#14532d',
-  },
-  gray: {
-    50: '#f9fafb',
-    100: '#f3f4f6',
-    200: '#e5e7eb',
-    300: '#d1d5db',
-    400: '#9ca3af',
-    500: '#6b7280',
-    600: '#4b5563',
-    700: '#374151',
-    800: '#1f2937',
-    900: '#111827',
-  },
-  status: {
-    fasting: '#f59e0b',
-    eating: '#22c55e',
-    idle: '#6b7280',
-  },
+/** 라이트 모드 색상 */
+export const LIGHT = {
+  background: '#F5F5F5',
+  surface: '#FFFFFF',
+  textPrimary: '#1A1A1A',
+  textSecondary: '#6B7280',
+  textMuted: '#9CA3AF',
+  border: '#E5E7EB',
+  btnPrimary: '#1A1A1A',
+  btnText: '#FFFFFF',
+  progressBar: '#1A1A1A',
+  progressTrack: '#E5E7EB',
 } as const;
+
+/** 다크 모드 색상 */
+export const DARK = {
+  background: '#111111',
+  surface: '#1C1C1E',
+  textPrimary: '#F5F5F5',
+  textSecondary: '#9CA3AF',
+  textMuted: '#6B7280',
+  border: '#2C2C2E',
+  btnPrimary: '#F5F5F5',
+  btnText: '#1A1A1A',
+  progressBar: '#F5F5F5',
+  progressTrack: '#2C2C2E',
+} as const;
+
+/** 액센트 색상 (라이트/다크 공통) */
+export const ACCENT = {
+  green: '#22C55E',
+  red: '#EF4444',
+  blue: '#3B82F6',
+  orange: '#F97316',
+  purple: '#A855F7',
+} as const;
+
+/** 테마 색상 반환 헬퍼 */
+export function getThemeColors(isDark: boolean) {
+  return isDark ? DARK : LIGHT;
+}

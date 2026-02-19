@@ -21,19 +21,19 @@ export default function AllowedForbiddenList({
   return (
     <View className="flex-row gap-3">
       {/* 허용 목록 */}
-      <View className="flex-1 bg-green-50 dark:bg-green-900/20 rounded-2xl p-4">
+      <View className="flex-1 bg-accent-green/10 rounded-2xl p-4">
         <View className="flex-row items-center mb-3">
           <Text className="text-lg mr-2">✅</Text>
-          <Text className="text-base font-bold text-green-700 dark:text-green-300">
+          <Text className="text-base font-bold text-accent-green">
             허용
           </Text>
         </View>
         {allowedItems.map((item) => (
           <View key={item.id} className="mb-2">
-            <Text className="text-sm font-medium text-gray-900 dark:text-white">
+            <Text className="text-sm font-medium text-text-primary dark:text-text-primary-dark">
               {item.name}
             </Text>
-            <Text className="text-xs text-gray-500 dark:text-gray-400">
+            <Text className="text-xs text-text-muted dark:text-text-muted-dark">
               {item.description}
             </Text>
           </View>
@@ -41,19 +41,19 @@ export default function AllowedForbiddenList({
       </View>
 
       {/* 금지 목록 */}
-      <View className="flex-1 bg-red-50 dark:bg-red-900/20 rounded-2xl p-4">
+      <View className="flex-1 bg-accent-red/10 rounded-2xl p-4">
         <View className="flex-row items-center mb-3">
           <Text className="text-lg mr-2">❌</Text>
-          <Text className="text-base font-bold text-red-700 dark:text-red-300">
+          <Text className="text-base font-bold text-accent-red">
             금지
           </Text>
         </View>
         {forbiddenItems.map((item) => (
           <View key={item.id} className="mb-2">
-            <Text className="text-sm font-medium text-gray-900 dark:text-white">
+            <Text className="text-sm font-medium text-text-primary dark:text-text-primary-dark">
               {item.name}
             </Text>
-            <Text className="text-xs text-gray-500 dark:text-gray-400">
+            <Text className="text-xs text-text-muted dark:text-text-muted-dark">
               {item.description}
             </Text>
           </View>

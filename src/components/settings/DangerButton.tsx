@@ -30,9 +30,9 @@ export default function DangerButton({
   return (
     <Pressable
       onPress={handlePress}
-      className="bg-white dark:bg-gray-800 rounded-2xl px-4 py-3 items-center active:bg-red-50 dark:active:bg-red-900/20"
+      className="bg-surface dark:bg-surface-dark rounded-2xl px-4 py-3 items-center active:bg-accent-red/10"
     >
-      <Text className="text-base text-red-500 font-medium">{title}</Text>
+      <Text className="text-base text-accent-red font-medium">{title}</Text>
     </Pressable>
   );
 }

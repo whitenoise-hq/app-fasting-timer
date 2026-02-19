@@ -37,7 +37,7 @@ export default function SettingsScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50 dark:bg-gray-900">
+    <SafeAreaView className="flex-1 bg-background dark:bg-background-dark">
       <ScrollView
         className="flex-1"
         contentContainerStyle={{ padding: 16 }}
@@ -45,7 +45,7 @@ export default function SettingsScreen() {
       >
         {/* 헤더 */}
         <View className="mb-6">
-          <Text className="text-2xl font-bold text-gray-900 dark:text-white">
+          <Text className="text-2xl font-bold text-text-primary dark:text-text-primary-dark">
             설정
           </Text>
         </View>
@@ -117,10 +117,10 @@ export default function SettingsScreen() {
 
         {/* 앱 정보 */}
         <View className="items-center py-6">
-          <Text className="text-sm text-gray-400 dark:text-gray-500">
+          <Text className="text-sm text-text-muted dark:text-text-muted-dark">
             단식 타이머 v{APP_VERSION}
           </Text>
-          <Text className="text-xs text-gray-300 dark:text-gray-600 mt-1">
+          <Text className="text-xs text-text-muted dark:text-text-muted-dark mt-1">
             Made with ❤️ for healthy lifestyle
           </Text>
         </View>

@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, Pressable, AppState, AppStateStatus } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Circle, Path } from 'react-native-svg';
+import { useSettingsStore } from '../../src/stores/settingsStore';
+import { getThemeColors, ACCENT } from '../../src/constants/colors';
 
 /** 밀리초를 시:분:초 형태로 변환 */
 function formatDuration(ms: number): string {
@@ -35,6 +37,9 @@ export default function HomeScreen() {
   const [remainingMs, setRemainingMs] = useState(0);
   const [progress, setProgress] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const darkMode = useSettingsStore((state) => state.darkMode);
+  const theme = getThemeColors(darkMode);
 
   const fastingHours = 16;
   const planName = '16:8';
@@ -103,7 +108,6 @@ export default function HomeScreen() {
   };
 
   const isFasting = status === 'fasting';
-  const statusColor = isFasting ? '#ef4444' : '#9ca3af';
   const statusText = isFasting ? '단식 중' : '대기 중';
 
   // 원형 타이머 계산
@@ -115,7 +119,7 @@ export default function HomeScreen() {
   const center = size / 2;
 
   return (
-    <SafeAreaView className="flex-1 bg-white dark:bg-gray-900">
+    <SafeAreaView className="flex-1 bg-background dark:bg-background-dark">
       <View className="flex-1 px-6 py-4">
         {/* 타이머 영역 */}
         <View className="flex-1 items-center justify-center">
@@ -125,7 +129,7 @@ export default function HomeScreen() {
                 cx={center}
                 cy={center}
                 r={radius}
-                stroke="#e5e7eb"
+                stroke={theme.progressTrack}
                 strokeWidth={strokeWidth}
                 fill="none"
               />
@@ -133,7 +137,7 @@ export default function HomeScreen() {
                 cx={center}
                 cy={center}
                 r={radius}
-                stroke={statusColor}
+                stroke={theme.progressBar}
                 strokeWidth={strokeWidth}
                 fill="none"
                 strokeLinecap="round"
@@ -146,14 +150,17 @@ export default function HomeScreen() {
               className="absolute items-center justify-center"
               style={{ width: size, height: size }}
             >
-              <Text style={{ color: statusColor }} className="text-sm font-medium mb-1">
+              <Text
+                className="text-sm font-medium mb-1"
+                style={{ color: theme.textSecondary }}
+              >
                 {statusText}
               </Text>
-              <Text className="text-5xl font-bold text-gray-900 dark:text-white">
+              <Text className="text-5xl font-bold text-text-primary dark:text-text-primary-dark">
                 {formatDuration(remainingMs)}
               </Text>
               {isFasting && (
-                <Text className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                <Text className="text-sm text-text-muted dark:text-text-muted-dark mt-2">
                   {Math.round(progress * 100)}% 완료
                 </Text>
               )}
@@ -164,47 +171,47 @@ export default function HomeScreen() {
         {/* 하단 영역 */}
         <View className="gap-4 pb-4">
           {/* 팁 */}
-          <View className="flex-row items-center bg-amber-50 dark:bg-amber-900/30 rounded-xl px-4 py-3">
+          <View className="flex-row items-center bg-accent-blue/10 rounded-xl px-4 py-3">
             <Svg width={20} height={20} viewBox="0 0 24 24" fill="none" className="mr-3">
               <Path
                 d="M9 21h6M12 3a6 6 0 00-4 10.47V17a1 1 0 001 1h6a1 1 0 001-1v-3.53A6 6 0 0012 3z"
-                stroke="#f59e0b"
+                stroke={ACCENT.blue}
                 strokeWidth={2}
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
             </Svg>
-            <Text className="flex-1 text-sm text-amber-800 dark:text-amber-200">
+            <Text className="flex-1 text-sm text-text-secondary dark:text-text-secondary-dark">
               {isFasting ? '물, 블랙커피, 무가당 차는 OK!' : '오늘도 건강한 단식을 시작해보세요!'}
             </Text>
           </View>
 
           {/* 플랜 정보 */}
-          <View className="w-full bg-gray-50 dark:bg-gray-800 rounded-2xl p-4">
+          <View className="w-full bg-surface dark:bg-surface-dark border border-border-custom dark:border-border-custom-dark rounded-2xl p-4">
             <View className="flex-row items-center justify-center mb-3">
-              <Text className="text-lg font-bold text-gray-900 dark:text-white">{planName}</Text>
-              <View className="ml-2 px-2 py-0.5 bg-green-100 dark:bg-green-900 rounded">
-                <Text className="text-xs font-medium text-green-700 dark:text-green-300">{planLabel}</Text>
+              <Text className="text-lg font-bold text-text-primary dark:text-text-primary-dark">{planName}</Text>
+              <View className="ml-2 px-2.5 py-0.5 bg-accent-green rounded-full">
+                <Text className="text-xs font-medium text-white">{planLabel}</Text>
               </View>
             </View>
             {startTime && targetEndTime ? (
               <View className="flex-row justify-between">
                 <View className="items-center flex-1">
-                  <Text className="text-xs text-gray-500 dark:text-gray-400 mb-1">시작</Text>
-                  <Text className="text-base font-semibold text-gray-900 dark:text-white">
+                  <Text className="text-xs text-text-muted dark:text-text-muted-dark mb-1">시작</Text>
+                  <Text className="text-base font-semibold text-text-primary dark:text-text-primary-dark">
                     {formatTime(startTime)}
                   </Text>
                 </View>
-                <View className="w-px bg-gray-200 dark:bg-gray-700 mx-4" />
+                <View className="w-px bg-border-custom dark:bg-border-custom-dark mx-4" />
                 <View className="items-center flex-1">
-                  <Text className="text-xs text-gray-500 dark:text-gray-400 mb-1">목표</Text>
-                  <Text className="text-base font-semibold text-gray-900 dark:text-white">
+                  <Text className="text-xs text-text-muted dark:text-text-muted-dark mb-1">목표</Text>
+                  <Text className="text-base font-semibold text-text-primary dark:text-text-primary-dark">
                     {formatTime(targetEndTime)}
                   </Text>
                 </View>
               </View>
             ) : (
-              <Text className="text-center text-sm text-gray-500 dark:text-gray-400">
+              <Text className="text-center text-sm text-text-muted dark:text-text-muted-dark">
                 단식을 시작하면 시간 정보가 표시됩니다
               </Text>
             )}
@@ -213,11 +220,9 @@ export default function HomeScreen() {
           {/* 버튼 */}
           <Pressable
             onPress={isFasting ? handleStop : handleStart}
-            className={`w-full py-4 rounded-2xl items-center justify-center ${
-              isFasting ? 'bg-red-500 active:bg-red-600' : 'bg-green-500 active:bg-green-600'
-            }`}
+            className="w-full py-4 rounded-full items-center justify-center bg-btn-primary dark:bg-btn-primary-dark active:opacity-80"
           >
-            <Text className="text-white text-lg font-semibold">
+            <Text className="text-btn-text dark:text-btn-text-dark text-lg font-semibold">
               {isFasting ? '단식 종료' : '단식 시작'}
             </Text>
           </Pressable>

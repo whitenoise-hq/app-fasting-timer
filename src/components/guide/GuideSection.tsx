@@ -12,7 +12,7 @@ interface GuideSectionProps {
 export default function GuideSection({ title, children }: GuideSectionProps) {
   return (
     <View className="mb-6">
-      <Text className="text-lg font-bold text-gray-900 dark:text-white mb-3">
+      <Text className="text-lg font-bold text-text-primary dark:text-text-primary-dark mb-3">
         {title}
       </Text>
       {children}

@@ -7,6 +7,8 @@ import {
   isToday,
   WEEKDAY_NAMES,
 } from '../../utils/date';
+import { useSettingsStore } from '../../stores/settingsStore';
+import { getThemeColors } from '../../constants/colors';
 
 interface CalendarProps {
   /** 현재 표시 연도 */
@@ -38,6 +40,9 @@ export default function Calendar({
   hasCompletedRecord,
   hasRecord,
 }: CalendarProps) {
+  const darkMode = useSettingsStore((state) => state.darkMode);
+  const theme = getThemeColors(darkMode);
+
   const daysInMonth = getDaysInMonth(year, month);
   const firstDayOfWeek = getFirstDayOfWeek(year, month);
 
@@ -76,19 +81,19 @@ export default function Calendar({
         <View
           className={`w-10 h-10 items-center justify-center rounded-full ${
             isSelected
-              ? 'bg-primary-500'
+              ? 'bg-btn-primary dark:bg-btn-primary-dark'
               : isTodayDate
-              ? 'bg-gray-200 dark:bg-gray-700'
+              ? 'bg-background dark:bg-background-dark'
               : ''
           }`}
         >
           <Text
             className={`text-base font-medium ${
               isSelected
-                ? 'text-white'
+                ? 'text-btn-text dark:text-btn-text-dark'
                 : isTodayDate
-                ? 'text-gray-900 dark:text-white'
-                : 'text-gray-700 dark:text-gray-300'
+                ? 'text-text-primary dark:text-text-primary-dark'
+                : 'text-text-secondary dark:text-text-secondary-dark'
             }`}
           >
             {day}
@@ -98,7 +103,7 @@ export default function Calendar({
         {hasAnyRecord && !isSelected && (
           <View
             className={`w-1.5 h-1.5 rounded-full mt-0.5 ${
-              hasCompleted ? 'bg-green-500' : 'bg-gray-400'
+              hasCompleted ? 'bg-accent-green' : 'bg-accent-red'
             }`}
           />
         )}
@@ -107,17 +112,17 @@ export default function Calendar({
   };
 
   return (
-    <View className="bg-white dark:bg-gray-800 rounded-2xl p-4">
+    <View className="bg-surface dark:bg-surface-dark rounded-2xl p-4">
       {/* 헤더 */}
       <View className="flex-row items-center justify-between mb-4">
         <Pressable
           onPress={onPrevMonth}
-          className="w-10 h-10 items-center justify-center rounded-full active:bg-gray-100 dark:active:bg-gray-700"
+          className="w-10 h-10 items-center justify-center rounded-full active:bg-background dark:active:bg-background-dark"
         >
           <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
             <Path
               d="M15 18l-6-6 6-6"
-              stroke="#6b7280"
+              stroke={theme.textSecondary}
               strokeWidth={2}
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -125,18 +130,18 @@ export default function Calendar({
           </Svg>
         </Pressable>
 
-        <Text className="text-lg font-bold text-gray-900 dark:text-white">
+        <Text className="text-lg font-bold text-text-primary dark:text-text-primary-dark">
           {year}년 {month + 1}월
         </Text>
 
         <Pressable
           onPress={onNextMonth}
-          className="w-10 h-10 items-center justify-center rounded-full active:bg-gray-100 dark:active:bg-gray-700"
+          className="w-10 h-10 items-center justify-center rounded-full active:bg-background dark:active:bg-background-dark"
         >
           <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
             <Path
               d="M9 18l6-6-6-6"
-              stroke="#6b7280"
+              stroke={theme.textSecondary}
               strokeWidth={2}
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -152,10 +157,10 @@ export default function Calendar({
             <Text
               className={`text-sm font-medium ${
                 index === 0
-                  ? 'text-red-500'
+                  ? 'text-accent-red'
                   : index === 6
-                  ? 'text-blue-500'
-                  : 'text-gray-500 dark:text-gray-400'
+                  ? 'text-accent-blue'
+                  : 'text-text-muted dark:text-text-muted-dark'
               }`}
             >
               {name}

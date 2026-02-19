@@ -49,37 +49,37 @@ export default function PlanSelector({
       <View key={plan.id}>
         <Pressable
           onPress={() => onSelectPlan(plan.id)}
-          className="flex-row items-center px-4 py-3 active:bg-gray-50 dark:active:bg-gray-700"
+          className="flex-row items-center px-4 py-3 active:bg-background dark:active:bg-background-dark"
         >
           {/* 라디오 버튼 */}
           <View
             className={`w-5 h-5 rounded-full border-2 items-center justify-center mr-3 ${
               isSelected
-                ? 'border-primary-500 bg-primary-500'
-                : 'border-gray-300 dark:border-gray-600'
+                ? 'border-btn-primary dark:border-btn-primary-dark bg-btn-primary dark:bg-btn-primary-dark'
+                : 'border-border-custom dark:border-border-custom-dark'
             }`}
           >
-            {isSelected && <View className="w-2 h-2 rounded-full bg-white" />}
+            {isSelected && <View className="w-2 h-2 rounded-full bg-btn-text dark:bg-btn-text-dark" />}
           </View>
 
           {/* 플랜 정보 */}
           <View className="flex-1">
             <View className="flex-row items-center">
-              <Text className="text-base font-medium text-gray-900 dark:text-white">
+              <Text className="text-base font-medium text-text-primary dark:text-text-primary-dark">
                 {plan.name}
               </Text>
-              <View className="ml-2 px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">
-                <Text className="text-xs text-gray-600 dark:text-gray-300">
+              <View className="ml-2 px-1.5 py-0.5 bg-background dark:bg-background-dark rounded">
+                <Text className="text-xs text-text-secondary dark:text-text-secondary-dark">
                   {plan.label}
                 </Text>
               </View>
             </View>
-            <Text className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+            <Text className="text-sm text-text-muted dark:text-text-muted-dark mt-0.5">
               단식 {plan.fastingHours}시간 / 식사 {plan.eatingHours}시간
             </Text>
           </View>
         </Pressable>
-        {!isLast && <View className="h-px bg-gray-100 dark:bg-gray-700 ml-12" />}
+        {!isLast && <View className="h-px bg-border-custom dark:bg-border-custom-dark ml-12" />}
       </View>
     );
   };
@@ -90,22 +90,22 @@ export default function PlanSelector({
       {DEFAULT_PLANS.map((plan, index) => renderPlanItem(plan, index))}
 
       {/* 커스텀 옵션 */}
-      <View className="h-px bg-gray-100 dark:bg-gray-700 ml-12" />
+      <View className="h-px bg-border-custom dark:bg-border-custom-dark ml-12" />
       <Pressable
         onPress={() => onSelectPlan('custom')}
-        className="flex-row items-center px-4 py-3 active:bg-gray-50 dark:active:bg-gray-700"
+        className="flex-row items-center px-4 py-3 active:bg-background dark:active:bg-background-dark"
       >
         <View
           className={`w-5 h-5 rounded-full border-2 items-center justify-center mr-3 ${
             isCustomSelected
-              ? 'border-primary-500 bg-primary-500'
-              : 'border-gray-300 dark:border-gray-600'
+              ? 'border-btn-primary dark:border-btn-primary-dark bg-btn-primary dark:bg-btn-primary-dark'
+              : 'border-border-custom dark:border-border-custom-dark'
           }`}
         >
-          {isCustomSelected && <View className="w-2 h-2 rounded-full bg-white" />}
+          {isCustomSelected && <View className="w-2 h-2 rounded-full bg-btn-text dark:bg-btn-text-dark" />}
         </View>
-        <Text className="text-base font-medium text-gray-900 dark:text-white">
-          커스텀
+        <Text className="text-base font-medium text-text-primary dark:text-text-primary-dark">
+          직접입력
         </Text>
       </Pressable>
 
@@ -114,7 +114,7 @@ export default function PlanSelector({
         <View className="px-4 pb-4">
           <View className="flex-row gap-3 ml-8">
             <View className="flex-1">
-              <Text className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+              <Text className="text-xs text-text-muted dark:text-text-muted-dark mb-1">
                 단식 (시간)
               </Text>
               <TextInput
@@ -123,12 +123,12 @@ export default function PlanSelector({
                 onBlur={handleApplyCustom}
                 keyboardType="number-pad"
                 maxLength={2}
-                className="bg-gray-100 dark:bg-gray-700 rounded-lg px-3 py-2 text-base text-gray-900 dark:text-white"
+                className="bg-background dark:bg-background-dark rounded-lg px-3 py-2 text-base text-text-primary dark:text-text-primary-dark"
                 placeholderTextColor="#9ca3af"
               />
             </View>
             <View className="flex-1">
-              <Text className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+              <Text className="text-xs text-text-muted dark:text-text-muted-dark mb-1">
                 식사 (시간)
               </Text>
               <TextInput
@@ -137,7 +137,7 @@ export default function PlanSelector({
                 onBlur={handleApplyCustom}
                 keyboardType="number-pad"
                 maxLength={2}
-                className="bg-gray-100 dark:bg-gray-700 rounded-lg px-3 py-2 text-base text-gray-900 dark:text-white"
+                className="bg-background dark:bg-background-dark rounded-lg px-3 py-2 text-base text-text-primary dark:text-text-primary-dark"
                 placeholderTextColor="#9ca3af"
               />
             </View>

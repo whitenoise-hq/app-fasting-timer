@@ -1,4 +1,6 @@
 import { View, Text, Switch } from 'react-native';
+import { useSettingsStore } from '../../stores/settingsStore';
+import { getThemeColors, ACCENT } from '../../constants/colors';
 
 interface SettingToggleProps {
   /** 토글 제목 */
@@ -21,13 +23,16 @@ export default function SettingToggle({
   onValueChange,
   showDivider = true,
 }: SettingToggleProps) {
+  const darkMode = useSettingsStore((state) => state.darkMode);
+  const theme = getThemeColors(darkMode);
+
   return (
     <View>
       <View className="flex-row items-center justify-between px-4 py-3">
         <View className="flex-1 mr-3">
-          <Text className="text-base text-gray-900 dark:text-white">{title}</Text>
+          <Text className="text-base text-text-primary dark:text-text-primary-dark">{title}</Text>
           {description && (
-            <Text className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+            <Text className="text-sm text-text-muted dark:text-text-muted-dark mt-0.5">
               {description}
             </Text>
           )}
@@ -35,11 +40,11 @@ export default function SettingToggle({
         <Switch
           value={value}
           onValueChange={onValueChange}
-          trackColor={{ false: '#d1d5db', true: '#86efac' }}
-          thumbColor={value ? '#22c55e' : '#f3f4f6'}
+          trackColor={{ false: theme.progressTrack, true: ACCENT.green }}
+          thumbColor={value ? '#FFFFFF' : theme.surface}
         />
       </View>
-      {showDivider && <View className="h-px bg-gray-100 dark:bg-gray-700 ml-4" />}
+      {showDivider && <View className="h-px bg-border-custom dark:bg-border-custom-dark ml-4" />}
     </View>
   );
 }

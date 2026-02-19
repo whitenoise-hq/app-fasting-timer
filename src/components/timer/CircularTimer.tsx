@@ -1,6 +1,8 @@
 import { View, Text } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 import type { TimerStatus } from '../../types';
+import { useSettingsStore } from '../../stores/settingsStore';
+import { getThemeColors } from '../../constants/colors';
 
 interface CircularTimerProps {
   /** 진행률 (0~1) */
@@ -28,17 +30,8 @@ export default function CircularTimer({
   const strokeDashoffset = circumference * (1 - progress);
   const center = size / 2;
 
-  /** 상태별 색상 */
-  const getStatusColor = () => {
-    switch (status) {
-      case 'fasting':
-        return '#ef4444'; // red-500
-      case 'eating':
-        return '#22c55e'; // green-500
-      default:
-        return '#9ca3af'; // gray-400
-    }
-  };
+  const darkMode = useSettingsStore((state) => state.darkMode);
+  const theme = getThemeColors(darkMode);
 
   /** 상태별 텍스트 */
   const getStatusText = () => {
@@ -52,9 +45,6 @@ export default function CircularTimer({
     }
   };
 
-  const progressColor = getStatusColor();
-  const statusText = getStatusText();
-
   return (
     <View className="items-center justify-center">
       <View style={{ width: size, height: size }}>
@@ -64,7 +54,7 @@ export default function CircularTimer({
             cx={center}
             cy={center}
             r={radius}
-            stroke="#e5e7eb"
+            stroke={theme.progressTrack}
             strokeWidth={strokeWidth}
             fill="none"
           />
@@ -73,7 +63,7 @@ export default function CircularTimer({
             cx={center}
             cy={center}
             r={radius}
-            stroke={progressColor}
+            stroke={theme.progressBar}
             strokeWidth={strokeWidth}
             fill="none"
             strokeLinecap="round"
@@ -90,15 +80,15 @@ export default function CircularTimer({
         >
           <Text
             className="text-sm font-medium mb-1"
-            style={{ color: progressColor }}
+            style={{ color: theme.textSecondary }}
           >
-            {statusText}
+            {getStatusText()}
           </Text>
-          <Text className="text-5xl font-bold text-gray-900 dark:text-white">
+          <Text className="text-5xl font-bold text-text-primary dark:text-text-primary-dark">
             {remainingTime}
           </Text>
           {status === 'fasting' && (
-            <Text className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+            <Text className="text-sm text-text-muted dark:text-text-muted-dark mt-2">
               {Math.round(progress * 100)}% 완료
             </Text>
           )}
