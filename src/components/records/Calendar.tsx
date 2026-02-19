@@ -7,8 +7,7 @@ import {
   isToday,
   WEEKDAY_NAMES,
 } from '../../utils/date';
-import { useSettingsStore } from '../../stores/settingsStore';
-import { getThemeColors } from '../../constants/colors';
+import { THEME } from '../../constants/colors';
 
 interface CalendarProps {
   /** 현재 표시 연도 */
@@ -40,9 +39,6 @@ export default function Calendar({
   hasCompletedRecord,
   hasRecord,
 }: CalendarProps) {
-  const darkMode = useSettingsStore((state) => state.darkMode);
-  const theme = getThemeColors(darkMode);
-
   const daysInMonth = getDaysInMonth(year, month);
   const firstDayOfWeek = getFirstDayOfWeek(year, month);
 
@@ -81,19 +77,19 @@ export default function Calendar({
         <View
           className={`w-10 h-10 items-center justify-center rounded-full ${
             isSelected
-              ? 'bg-btn-primary dark:bg-btn-primary-dark'
+              ? 'bg-btn-primary'
               : isTodayDate
-              ? 'bg-background dark:bg-background-dark'
+              ? 'bg-background'
               : ''
           }`}
         >
           <Text
             className={`font-sans text-base ${
               isSelected
-                ? 'text-btn-text dark:text-btn-text-dark'
+                ? 'text-btn-text'
                 : isTodayDate
-                ? 'text-text-primary dark:text-text-primary-dark'
-                : 'text-text-secondary dark:text-text-secondary-dark'
+                ? 'text-text-primary'
+                : 'text-text-secondary'
             }`}
           >
             {day}
@@ -112,17 +108,17 @@ export default function Calendar({
   };
 
   return (
-    <View className="bg-surface dark:bg-surface-dark rounded-2xl p-4">
+    <View className="bg-surface rounded-2xl p-4">
       {/* 헤더 */}
       <View className="flex-row items-center justify-between mb-4">
         <Pressable
           onPress={onPrevMonth}
-          className="w-10 h-10 items-center justify-center rounded-full active:bg-background dark:active:bg-background-dark"
+          className="w-10 h-10 items-center justify-center rounded-full active:bg-background"
         >
           <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
             <Path
               d="M15 18l-6-6 6-6"
-              stroke={theme.textSecondary}
+              stroke={THEME.textSecondary}
               strokeWidth={2}
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -130,18 +126,18 @@ export default function Calendar({
           </Svg>
         </Pressable>
 
-        <Text className="text-lg font-heading text-text-primary dark:text-text-primary-dark">
+        <Text className="text-lg font-heading text-text-primary">
           {year}년 {month + 1}월
         </Text>
 
         <Pressable
           onPress={onNextMonth}
-          className="w-10 h-10 items-center justify-center rounded-full active:bg-background dark:active:bg-background-dark"
+          className="w-10 h-10 items-center justify-center rounded-full active:bg-background"
         >
           <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
             <Path
               d="M9 18l6-6-6-6"
-              stroke={theme.textSecondary}
+              stroke={THEME.textSecondary}
               strokeWidth={2}
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -160,7 +156,7 @@ export default function Calendar({
                   ? 'text-accent-red'
                   : index === 6
                   ? 'text-accent-blue'
-                  : 'text-text-muted dark:text-text-muted-dark'
+                  : 'text-text-muted'
               }`}
             >
               {name}

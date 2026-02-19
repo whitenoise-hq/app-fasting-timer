@@ -1,5 +1,5 @@
-/** 라이트 모드 색상 */
-export const LIGHT = {
+/** 앱 색상 */
+export const THEME = {
   background: '#F5F5F5',
   surface: '#FFFFFF',
   textPrimary: '#1A1A1A',
@@ -12,30 +12,12 @@ export const LIGHT = {
   progressTrack: '#E5E7EB',
 } as const;
 
-/** 다크 모드 색상 */
-export const DARK = {
-  background: '#111111',
-  surface: '#1C1C1E',
-  textPrimary: '#F5F5F5',
-  textSecondary: '#9CA3AF',
-  textMuted: '#6B7280',
-  border: '#2C2C2E',
-  btnPrimary: '#F5F5F5',
-  btnText: '#1A1A1A',
-  progressBar: '#F5F5F5',
-  progressTrack: '#2C2C2E',
-} as const;
-
-/** 액센트 색상 (라이트/다크 공통) */
+/** 액센트 색상 */
 export const ACCENT = {
   green: '#5ED99A',
   red: '#F78C8C',
   blue: '#7AB5FC',
   orange: '#FCAB58',
   purple: '#C99CFC',
+  yellow: '#FFC107',
 } as const;
-
-/** 테마 색상 반환 헬퍼 */
-export function getThemeColors(isDark: boolean) {
-  return isDark ? DARK : LIGHT;
-}

@@ -19,7 +19,7 @@ import {
 
 export default function GuideScreen() {
   return (
-    <SafeAreaView className="flex-1 bg-background dark:bg-background-dark">
+    <SafeAreaView className="flex-1 bg-background">
       <ScrollView
         className="flex-1"
         contentContainerStyle={{ padding: 16 }}
@@ -27,10 +27,10 @@ export default function GuideScreen() {
       >
         {/* 헤더 */}
         <View className="mb-6">
-          <Text className="text-2xl font-heading text-text-primary dark:text-text-primary-dark mb-1">
+          <Text className="text-2xl font-heading text-text-primary mb-1">
             단식 가이드
           </Text>
-          <Text className="font-sans text-sm text-text-muted dark:text-text-muted-dark">
+          <Text className="font-sans text-sm text-text-muted">
             간헐적 단식의 모든 것을 알려드려요
           </Text>
         </View>

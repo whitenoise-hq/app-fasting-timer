@@ -10,7 +10,6 @@ interface SettingsState {
   customEatingHours: number | null;
   eatingStartTime: string;
   notifications: NotificationSettings;
-  darkMode: boolean;
 }
 
 interface SettingsActions {
@@ -18,7 +17,6 @@ interface SettingsActions {
   setCustomHours: (fasting: number, eating: number) => void;
   setEatingStartTime: (time: string) => void;
   setNotification: (key: keyof NotificationSettings, value: boolean) => void;
-  setDarkMode: (enabled: boolean) => void;
   resetSettings: () => void;
 }
 
@@ -35,7 +33,6 @@ const initialState: SettingsState = {
     eatingReminder: true,
     halfwayCheer: false,
   },
-  darkMode: false,
 };
 
 export const useSettingsStore = create<SettingsStore>()(
@@ -62,9 +59,6 @@ export const useSettingsStore = create<SettingsStore>()(
         set((state) => ({
           notifications: { ...state.notifications, [key]: value },
         })),
-
-      /** 다크모드 설정 */
-      setDarkMode: (enabled: boolean) => set({ darkMode: enabled }),
 
       /** 설정 초기화 */
       resetSettings: () => set(initialState),

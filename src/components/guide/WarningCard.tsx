@@ -36,7 +36,7 @@ export default function WarningCard({ warning }: WarningCardProps) {
       {warning.items.map((item, index) => (
         <View key={index} className="flex-row items-start ml-2 mb-1.5">
           <Text className="font-sans text-accent-red mr-2">•</Text>
-          <Text className="font-sans text-sm text-text-secondary dark:text-text-secondary-dark flex-1">
+          <Text className="font-sans text-sm text-text-secondary flex-1">
             {item}
           </Text>
         </View>

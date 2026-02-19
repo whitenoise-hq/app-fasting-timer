@@ -90,11 +90,10 @@ export default function CircularTimer({ progress, remainingTime }: CircularTimer
 - **NativeWind className만 사용** (StyleSheet.create 금지)
 - Tailwind 유틸리티 클래스로 스타일링
 - 색상은 `src/constants/colors.ts`에서 관리
-- 다크모드는 NativeWind의 `dark:` 프리픽스 활용
 
 ```tsx
 // ✅ 좋은 예
-<View className="flex-1 items-center justify-center bg-white dark:bg-gray-900">
+<View className="flex-1 items-center justify-center bg-background">
 
 // ❌ 나쁜 예
 <View style={styles.container}>
@@ -225,7 +224,6 @@ interface UserSettings {
   customEatingHours: number | null;
   eatingStartTime: string;  // "11:00"
   notifications: NotificationSettings;
-  darkMode: boolean;
 }
 
 // 통계
@@ -265,7 +263,6 @@ interface FastingStats {
 - 단식 플랜 선택 (프리셋 4종 + 커스텀 직접 입력)
 - 식사 시작 시간 설정
 - 알림 종류별 ON/OFF
-- 다크모드 토글
 - 데이터 초기화
 - 앱 정보/버전
 
@@ -300,7 +297,7 @@ expo-notifications를 사용한 로컬 푸시 알림. 서버 불필요.
 2. **AsyncStorage 데이터 구조 변경 시**: 마이그레이션 로직 필수 (기존 사용자 데이터 유지)
 3. **타이머 백그라운드 동작**: 앱이 백그라운드일 때 타이머는 startTime 기준으로 계산 (setInterval 의존 금지)
 4. **날짜/시간 처리**: `new Date()` 직접 사용 대신 ISO 8601 문자열로 저장, 표시 시에만 포맷팅
-5. **다크모드**: NativeWind `dark:` 프리픽스로 처리. 시스템 설정 연동 + 수동 토글 지원
+5. **색상 관리**: `src/constants/colors.ts`의 `THEME`/`ACCENT` 객체로 관리. Tailwind 시맨틱 토큰 사용
 
 ---
 

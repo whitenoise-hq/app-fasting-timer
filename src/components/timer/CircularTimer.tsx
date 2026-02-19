@@ -1,8 +1,7 @@
 import { View, Text } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 import type { TimerStatus } from '../../types';
-import { useSettingsStore } from '../../stores/settingsStore';
-import { getThemeColors } from '../../constants/colors';
+import { THEME } from '../../constants/colors';
 
 interface CircularTimerProps {
   /** 진행률 (0~1) */
@@ -30,9 +29,6 @@ export default function CircularTimer({
   const strokeDashoffset = circumference * (1 - progress);
   const center = size / 2;
 
-  const darkMode = useSettingsStore((state) => state.darkMode);
-  const theme = getThemeColors(darkMode);
-
   /** 상태별 텍스트 */
   const getStatusText = () => {
     switch (status) {
@@ -54,7 +50,7 @@ export default function CircularTimer({
             cx={center}
             cy={center}
             r={radius}
-            stroke={theme.progressTrack}
+            stroke={THEME.progressTrack}
             strokeWidth={strokeWidth}
             fill="none"
           />
@@ -63,7 +59,7 @@ export default function CircularTimer({
             cx={center}
             cy={center}
             r={radius}
-            stroke={theme.progressBar}
+            stroke={THEME.progressBar}
             strokeWidth={strokeWidth}
             fill="none"
             strokeLinecap="round"
@@ -80,15 +76,15 @@ export default function CircularTimer({
         >
           <Text
             className="font-sans text-sm mb-1"
-            style={{ color: theme.textSecondary }}
+            style={{ color: THEME.textSecondary }}
           >
             {getStatusText()}
           </Text>
-          <Text className="text-5xl font-heading text-text-primary dark:text-text-primary-dark">
+          <Text className="text-5xl font-heading text-text-primary">
             {remainingTime}
           </Text>
           {status === 'fasting' && (
-            <Text className="font-sans text-sm text-text-muted dark:text-text-muted-dark mt-2">
+            <Text className="font-sans text-sm text-text-muted mt-2">
               {Math.round(progress * 100)}% 완료
             </Text>
           )}

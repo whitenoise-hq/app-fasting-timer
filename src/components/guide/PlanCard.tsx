@@ -18,9 +18,9 @@ export default function PlanCard({ plan }: PlanCardProps) {
   const chipColor = LABEL_COLORS[plan.id] ?? 'bg-text-muted';
 
   return (
-    <View className="bg-surface dark:bg-surface-dark border border-border-custom dark:border-border-custom-dark rounded-2xl p-4">
-      <View className="flex-row items-center justify-between mb-2">
-        <Text className="text-2xl font-heading text-text-primary dark:text-text-primary-dark">
+    <View className="bg-surface border border-border-custom rounded-2xl p-4">
+      <View className="flex-row items-center justify-between mb-3">
+        <Text className="text-2xl font-heading text-text-primary">
           {plan.name}
         </Text>
         <View className={`px-2.5 py-1 rounded-full ${chipColor}`}>
@@ -28,22 +28,24 @@ export default function PlanCard({ plan }: PlanCardProps) {
         </View>
       </View>
 
+      <View className="h-px bg-border-custom mx-1 mb-3" />
+
       <View className="flex-row mb-3">
         <View className="flex-1 mr-2">
-          <Text className="font-sans text-xs text-text-muted dark:text-text-muted-dark mb-1">단식</Text>
-          <Text className="text-lg font-heading text-text-primary dark:text-text-primary-dark">
+          <Text className="font-sans text-xs text-text-muted mb-1">단식</Text>
+          <Text className="text-lg font-heading text-text-primary">
             {plan.fastingHours}시간
           </Text>
         </View>
         <View className="flex-1">
-          <Text className="font-sans text-xs text-text-muted dark:text-text-muted-dark mb-1">식사</Text>
-          <Text className="text-lg font-heading text-text-primary dark:text-text-primary-dark">
+          <Text className="font-sans text-xs text-text-muted mb-1">식사</Text>
+          <Text className="text-lg font-heading text-text-primary">
             {plan.eatingHours}시간
           </Text>
         </View>
       </View>
 
-      <Text className="font-sans text-sm text-text-secondary dark:text-text-secondary-dark">
+      <Text className="font-sans text-sm text-text-secondary">
         {plan.description}
       </Text>
     </View>

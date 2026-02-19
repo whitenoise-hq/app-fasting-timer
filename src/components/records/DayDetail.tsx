@@ -39,8 +39,8 @@ function formatDateDisplay(dateKey: string): string {
 export default function DayDetail({ dateKey, records }: DayDetailProps) {
   if (records.length === 0) {
     return (
-      <View className="bg-surface dark:bg-surface-dark rounded-2xl p-4 items-center">
-        <Text className="font-sans text-text-muted dark:text-text-muted-dark">
+      <View className="bg-surface rounded-2xl p-4 items-center">
+        <Text className="font-sans text-text-muted">
           {formatDateDisplay(dateKey)}에는 기록이 없습니다
         </Text>
       </View>
@@ -48,15 +48,15 @@ export default function DayDetail({ dateKey, records }: DayDetailProps) {
   }
 
   return (
-    <View className="bg-surface dark:bg-surface-dark rounded-2xl p-4">
-      <Text className="text-lg font-heading text-text-primary dark:text-text-primary-dark mb-3">
+    <View className="bg-surface rounded-2xl p-4">
+      <Text className="text-lg font-heading text-text-primary mb-3">
         {formatDateDisplay(dateKey)} 기록
       </Text>
 
       {records.map((record, index) => (
         <View
           key={record.id}
-          className={`${index > 0 ? 'mt-3 pt-3 border-t border-border-custom dark:border-border-custom-dark' : ''}`}
+          className={`${index > 0 ? 'mt-3 pt-3 border-t border-border-custom' : ''}`}
         >
           {/* 성공/실패 배지 */}
           <View className="flex-row items-center mb-2">
@@ -64,7 +64,7 @@ export default function DayDetail({ dateKey, records }: DayDetailProps) {
               className={`flex-row items-center px-2 py-1 rounded-full ${
                 record.completed
                   ? 'bg-accent-green/10'
-                  : 'bg-background dark:bg-background-dark'
+                  : 'bg-background'
               }`}
             >
               {record.completed ? (
@@ -92,7 +92,7 @@ export default function DayDetail({ dateKey, records }: DayDetailProps) {
                 className={`font-sans text-xs ml-1 ${
                   record.completed
                     ? 'text-accent-green'
-                    : 'text-text-muted dark:text-text-muted-dark'
+                    : 'text-text-muted'
                 }`}
               >
                 {record.completed ? '목표 달성' : '중도 종료'}
@@ -103,20 +103,20 @@ export default function DayDetail({ dateKey, records }: DayDetailProps) {
           {/* 시간 정보 */}
           <View className="flex-row justify-between">
             <View className="flex-1">
-              <Text className="font-sans text-xs text-text-muted dark:text-text-muted-dark mb-1">시작</Text>
-              <Text className="font-sans text-sm text-text-primary dark:text-text-primary-dark">
+              <Text className="font-sans text-xs text-text-muted mb-1">시작</Text>
+              <Text className="font-sans text-sm text-text-primary">
                 {formatTimeFromISO(record.startTime)}
               </Text>
             </View>
             <View className="flex-1">
-              <Text className="font-sans text-xs text-text-muted dark:text-text-muted-dark mb-1">종료</Text>
-              <Text className="font-sans text-sm text-text-primary dark:text-text-primary-dark">
+              <Text className="font-sans text-xs text-text-muted mb-1">종료</Text>
+              <Text className="font-sans text-sm text-text-primary">
                 {record.endTime ? formatTimeFromISO(record.endTime) : '-'}
               </Text>
             </View>
             <View className="flex-1">
-              <Text className="font-sans text-xs text-text-muted dark:text-text-muted-dark mb-1">단식 시간</Text>
-              <Text className="font-sans text-sm text-text-primary dark:text-text-primary-dark">
+              <Text className="font-sans text-xs text-text-muted mb-1">단식 시간</Text>
+              <Text className="font-sans text-sm text-text-primary">
                 {formatMinutes(record.actualDuration)}
               </Text>
             </View>

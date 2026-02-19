@@ -19,12 +19,10 @@ export default function SettingsScreen() {
     customEatingHours,
     eatingStartTime,
     notifications,
-    darkMode,
     setSelectedPlan,
     setCustomHours,
     setEatingStartTime,
     setNotification,
-    setDarkMode,
     resetSettings,
   } = useSettingsStore();
 
@@ -37,7 +35,7 @@ export default function SettingsScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-background dark:bg-background-dark">
+    <SafeAreaView className="flex-1 bg-background">
       <ScrollView
         className="flex-1"
         contentContainerStyle={{ padding: 16 }}
@@ -45,7 +43,7 @@ export default function SettingsScreen() {
       >
         {/* 헤더 */}
         <View className="mb-6">
-          <Text className="text-2xl font-heading text-text-primary dark:text-text-primary-dark">
+          <Text className="text-2xl font-heading text-text-primary">
             설정
           </Text>
         </View>
@@ -95,17 +93,6 @@ export default function SettingsScreen() {
           />
         </SettingSection>
 
-        {/* 화면 설정 */}
-        <SettingSection title="화면">
-          <SettingToggle
-            title="다크 모드"
-            description="어두운 화면으로 전환해요"
-            value={darkMode}
-            onValueChange={setDarkMode}
-            showDivider={false}
-          />
-        </SettingSection>
-
         {/* 데이터 관리 */}
         <SettingSection title="데이터">
           <DangerButton
@@ -117,10 +104,10 @@ export default function SettingsScreen() {
 
         {/* 앱 정보 */}
         <View className="items-center py-6">
-          <Text className="font-sans text-sm text-text-muted dark:text-text-muted-dark">
+          <Text className="font-sans text-sm text-text-muted">
             단식 타이머 v{APP_VERSION}
           </Text>
-          <Text className="font-sans text-xs text-text-muted dark:text-text-muted-dark mt-1">
+          <Text className="font-sans text-xs text-text-muted mt-1">
             Made with ❤️ for healthy lifestyle
           </Text>
         </View>

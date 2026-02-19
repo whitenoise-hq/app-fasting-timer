@@ -13,46 +13,16 @@ module.exports = {
         heading: ['NanumBarunpen-Bold'],
       },
       colors: {
-        background: {
-          DEFAULT: '#F5F5F5',
-          dark: '#111111',
-        },
-        surface: {
-          DEFAULT: '#FFFFFF',
-          dark: '#1C1C1E',
-        },
-        'text-primary': {
-          DEFAULT: '#1A1A1A',
-          dark: '#F5F5F5',
-        },
-        'text-secondary': {
-          DEFAULT: '#6B7280',
-          dark: '#9CA3AF',
-        },
-        'text-muted': {
-          DEFAULT: '#9CA3AF',
-          dark: '#6B7280',
-        },
-        'border-custom': {
-          DEFAULT: '#E5E7EB',
-          dark: '#2C2C2E',
-        },
-        'btn-primary': {
-          DEFAULT: '#1A1A1A',
-          dark: '#F5F5F5',
-        },
-        'btn-text': {
-          DEFAULT: '#FFFFFF',
-          dark: '#1A1A1A',
-        },
-        'progress-bar': {
-          DEFAULT: '#1A1A1A',
-          dark: '#F5F5F5',
-        },
-        'progress-track': {
-          DEFAULT: '#E5E7EB',
-          dark: '#2C2C2E',
-        },
+        background: '#F5F5F5',
+        surface: '#FFFFFF',
+        'text-primary': '#1A1A1A',
+        'text-secondary': '#6B7280',
+        'text-muted': '#9CA3AF',
+        'border-custom': '#E5E7EB',
+        'btn-primary': '#1A1A1A',
+        'btn-text': '#FFFFFF',
+        'progress-bar': '#1A1A1A',
+        'progress-track': '#E5E7EB',
         'accent-green': '#5ED99A',
         'accent-red': '#F78C8C',
         'accent-blue': '#7AB5FC',

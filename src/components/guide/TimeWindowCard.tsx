@@ -16,34 +16,34 @@ interface TimeWindowCardProps {
 export default function TimeWindowCard({ timeWindow, isRecommended }: TimeWindowCardProps) {
   return (
     <View
-      className={`rounded-2xl p-4 bg-surface dark:bg-surface-dark ${
+      className={`rounded-2xl p-4 bg-surface ${
         isRecommended
-          ? 'border-2 border-btn-primary dark:border-btn-primary-dark'
-          : 'border border-border-custom dark:border-border-custom-dark'
+          ? 'border-2 border-btn-primary'
+          : 'border border-border-custom'
       }`}
     >
       <View className="flex-row items-center justify-between mb-2">
         <Text
           className={`text-base font-heading ${
             isRecommended
-              ? 'text-text-primary dark:text-text-primary-dark'
-              : 'text-text-primary dark:text-text-primary-dark'
+              ? 'text-text-primary'
+              : 'text-text-primary'
           }`}
         >
           {timeWindow.title}
         </Text>
         {isRecommended && (
-          <View className="bg-btn-primary dark:bg-btn-primary-dark px-2 py-0.5 rounded-full">
-            <Text className="font-sans text-xs text-btn-text dark:text-btn-text-dark">추천</Text>
+          <View className="bg-btn-primary px-2 py-0.5 rounded-full">
+            <Text className="font-sans text-xs text-btn-text">추천</Text>
           </View>
         )}
       </View>
 
-      <Text className="text-lg font-heading mb-2 text-text-primary dark:text-text-primary-dark">
+      <Text className="text-lg font-heading mb-2 text-text-primary">
         {timeWindow.timeRange}
       </Text>
 
-      <Text className="font-sans text-sm text-text-secondary dark:text-text-secondary-dark">
+      <Text className="font-sans text-sm text-text-secondary">
         {timeWindow.description}
       </Text>
     </View>

@@ -34,7 +34,6 @@ export interface UserSettings {
   customEatingHours: number | null;
   eatingStartTime: string;
   notifications: NotificationSettings;
-  darkMode: boolean;
 }
 
 /** 통계 */

@@ -12,10 +12,10 @@ interface SettingSectionProps {
 export default function SettingSection({ title, children }: SettingSectionProps) {
   return (
     <View className="mb-6">
-      <Text className="font-sans text-sm text-text-secondary dark:text-text-secondary-dark mb-2 px-1">
+      <Text className="font-sans text-sm text-text-secondary mb-2 px-1">
         {title}
       </Text>
-      <View className="bg-surface dark:bg-surface-dark rounded-2xl overflow-hidden">
+      <View className="bg-surface rounded-2xl overflow-hidden">
         {children}
       </View>
     </View>
