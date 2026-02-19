@@ -26,7 +26,7 @@ export default function FAQItem({ faq }: FAQItemProps) {
         onPress={() => setIsExpanded(!isExpanded)}
         className="flex-row items-center justify-between p-4 active:bg-background dark:active:bg-background-dark"
       >
-        <Text className="text-base font-medium text-text-primary dark:text-text-primary-dark flex-1 mr-3">
+        <Text className="font-sans text-base text-text-primary dark:text-text-primary-dark flex-1 mr-3">
           {faq.question}
         </Text>
         <View
@@ -49,7 +49,7 @@ export default function FAQItem({ faq }: FAQItemProps) {
       {isExpanded && (
         <View className="px-4 pb-4 pt-0">
           <View className="h-px bg-border-custom dark:bg-border-custom-dark mb-3" />
-          <Text className="text-sm text-text-secondary dark:text-text-secondary-dark leading-5">
+          <Text className="font-sans text-sm text-text-secondary dark:text-text-secondary-dark leading-5">
             {faq.answer}
           </Text>
         </View>

@@ -47,11 +47,11 @@ export default function TimePicker({ value, onValueChange }: TimePickerProps) {
         onPress={() => setIsModalVisible(true)}
         className="flex-row items-center justify-between px-4 py-3 active:bg-background dark:active:bg-background-dark"
       >
-        <Text className="text-base text-text-primary dark:text-text-primary-dark">
+        <Text className="font-sans text-base text-text-primary dark:text-text-primary-dark">
           식사 시작 시간
         </Text>
         <View className="flex-row items-center">
-          <Text className="text-base text-text-secondary dark:text-text-secondary-dark font-medium mr-1">
+          <Text className="font-sans text-base text-text-secondary dark:text-text-secondary-dark mr-1">
             {getDisplayTime()}
           </Text>
           <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
@@ -84,9 +84,9 @@ export default function TimePicker({ value, onValueChange }: TimePickerProps) {
             {/* 헤더 */}
             <View className="flex-row items-center justify-between px-4 py-3 border-b border-border-custom dark:border-border-custom-dark">
               <Pressable onPress={() => setIsModalVisible(false)}>
-                <Text className="text-base text-text-muted dark:text-text-muted-dark">취소</Text>
+                <Text className="font-sans text-base text-text-muted dark:text-text-muted-dark">취소</Text>
               </Pressable>
-              <Text className="text-base font-bold text-text-primary dark:text-text-primary-dark">
+              <Text className="text-base font-heading text-text-primary dark:text-text-primary-dark">
                 식사 시작 시간
               </Text>
               <View className="w-10" />
@@ -105,8 +105,8 @@ export default function TimePicker({ value, onValueChange }: TimePickerProps) {
                   <Text
                     className={`text-base ${
                       option.value === value
-                        ? 'text-text-primary dark:text-text-primary-dark font-bold'
-                        : 'text-text-primary dark:text-text-primary-dark'
+                        ? 'text-text-primary dark:text-text-primary-dark font-heading'
+                        : 'font-sans text-text-primary dark:text-text-primary-dark'
                     }`}
                   >
                     {option.label}

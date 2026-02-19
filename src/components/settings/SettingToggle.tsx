@@ -30,9 +30,9 @@ export default function SettingToggle({
     <View>
       <View className="flex-row items-center justify-between px-4 py-3">
         <View className="flex-1 mr-3">
-          <Text className="text-base text-text-primary dark:text-text-primary-dark">{title}</Text>
+          <Text className="font-sans text-base text-text-primary dark:text-text-primary-dark">{title}</Text>
           {description && (
-            <Text className="text-sm text-text-muted dark:text-text-muted-dark mt-0.5">
+            <Text className="font-sans text-sm text-text-muted dark:text-text-muted-dark mt-0.5">
               {description}
             </Text>
           )}

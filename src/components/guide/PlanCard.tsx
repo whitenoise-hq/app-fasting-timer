@@ -20,30 +20,30 @@ export default function PlanCard({ plan }: PlanCardProps) {
   return (
     <View className="bg-surface dark:bg-surface-dark border border-border-custom dark:border-border-custom-dark rounded-2xl p-4">
       <View className="flex-row items-center justify-between mb-2">
-        <Text className="text-2xl font-bold text-text-primary dark:text-text-primary-dark">
+        <Text className="text-2xl font-heading text-text-primary dark:text-text-primary-dark">
           {plan.name}
         </Text>
         <View className={`px-2.5 py-1 rounded-full ${chipColor}`}>
-          <Text className="text-xs font-medium text-white">{plan.label}</Text>
+          <Text className="font-sans text-xs text-white">{plan.label}</Text>
         </View>
       </View>
 
       <View className="flex-row mb-3">
         <View className="flex-1 mr-2">
-          <Text className="text-xs text-text-muted dark:text-text-muted-dark mb-1">단식</Text>
-          <Text className="text-lg font-semibold text-text-primary dark:text-text-primary-dark">
+          <Text className="font-sans text-xs text-text-muted dark:text-text-muted-dark mb-1">단식</Text>
+          <Text className="text-lg font-heading text-text-primary dark:text-text-primary-dark">
             {plan.fastingHours}시간
           </Text>
         </View>
         <View className="flex-1">
-          <Text className="text-xs text-text-muted dark:text-text-muted-dark mb-1">식사</Text>
-          <Text className="text-lg font-semibold text-text-primary dark:text-text-primary-dark">
+          <Text className="font-sans text-xs text-text-muted dark:text-text-muted-dark mb-1">식사</Text>
+          <Text className="text-lg font-heading text-text-primary dark:text-text-primary-dark">
             {plan.eatingHours}시간
           </Text>
         </View>
       </View>
 
-      <Text className="text-sm text-text-secondary dark:text-text-secondary-dark">
+      <Text className="font-sans text-sm text-text-secondary dark:text-text-secondary-dark">
         {plan.description}
       </Text>
     </View>

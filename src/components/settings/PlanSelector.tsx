@@ -65,16 +65,16 @@ export default function PlanSelector({
           {/* 플랜 정보 */}
           <View className="flex-1">
             <View className="flex-row items-center">
-              <Text className="text-base font-medium text-text-primary dark:text-text-primary-dark">
+              <Text className="font-sans text-base text-text-primary dark:text-text-primary-dark">
                 {plan.name}
               </Text>
               <View className="ml-2 px-1.5 py-0.5 bg-background dark:bg-background-dark rounded">
-                <Text className="text-xs text-text-secondary dark:text-text-secondary-dark">
+                <Text className="font-sans text-xs text-text-secondary dark:text-text-secondary-dark">
                   {plan.label}
                 </Text>
               </View>
             </View>
-            <Text className="text-sm text-text-muted dark:text-text-muted-dark mt-0.5">
+            <Text className="font-sans text-sm text-text-muted dark:text-text-muted-dark mt-0.5">
               단식 {plan.fastingHours}시간 / 식사 {plan.eatingHours}시간
             </Text>
           </View>
@@ -104,7 +104,7 @@ export default function PlanSelector({
         >
           {isCustomSelected && <View className="w-2 h-2 rounded-full bg-btn-text dark:bg-btn-text-dark" />}
         </View>
-        <Text className="text-base font-medium text-text-primary dark:text-text-primary-dark">
+        <Text className="font-sans text-base text-text-primary dark:text-text-primary-dark">
           직접입력
         </Text>
       </Pressable>
@@ -114,7 +114,7 @@ export default function PlanSelector({
         <View className="px-4 pb-4">
           <View className="flex-row gap-3 ml-8">
             <View className="flex-1">
-              <Text className="text-xs text-text-muted dark:text-text-muted-dark mb-1">
+              <Text className="font-sans text-xs text-text-muted dark:text-text-muted-dark mb-1">
                 단식 (시간)
               </Text>
               <TextInput
@@ -123,12 +123,12 @@ export default function PlanSelector({
                 onBlur={handleApplyCustom}
                 keyboardType="number-pad"
                 maxLength={2}
-                className="bg-background dark:bg-background-dark rounded-lg px-3 py-2 text-base text-text-primary dark:text-text-primary-dark"
+                className="font-sans bg-background dark:bg-background-dark rounded-lg px-3 py-2 text-base text-text-primary dark:text-text-primary-dark"
                 placeholderTextColor="#9ca3af"
               />
             </View>
             <View className="flex-1">
-              <Text className="text-xs text-text-muted dark:text-text-muted-dark mb-1">
+              <Text className="font-sans text-xs text-text-muted dark:text-text-muted-dark mb-1">
                 식사 (시간)
               </Text>
               <TextInput
@@ -137,7 +137,7 @@ export default function PlanSelector({
                 onBlur={handleApplyCustom}
                 keyboardType="number-pad"
                 maxLength={2}
-                className="bg-background dark:bg-background-dark rounded-lg px-3 py-2 text-base text-text-primary dark:text-text-primary-dark"
+                className="font-sans bg-background dark:bg-background-dark rounded-lg px-3 py-2 text-base text-text-primary dark:text-text-primary-dark"
                 placeholderTextColor="#9ca3af"
               />
             </View>

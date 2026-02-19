@@ -37,7 +37,8 @@
           "icon": "./assets/icon.png",
           "color": "#22c55e"
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true

@@ -88,7 +88,7 @@ export default function Calendar({
           }`}
         >
           <Text
-            className={`text-base font-medium ${
+            className={`font-sans text-base ${
               isSelected
                 ? 'text-btn-text dark:text-btn-text-dark'
                 : isTodayDate
@@ -130,7 +130,7 @@ export default function Calendar({
           </Svg>
         </Pressable>
 
-        <Text className="text-lg font-bold text-text-primary dark:text-text-primary-dark">
+        <Text className="text-lg font-heading text-text-primary dark:text-text-primary-dark">
           {year}년 {month + 1}월
         </Text>
 
@@ -155,7 +155,7 @@ export default function Calendar({
         {WEEKDAY_NAMES.map((name, index) => (
           <View key={name} className="flex-1 items-center py-2">
             <Text
-              className={`text-sm font-medium ${
+              className={`font-sans text-sm ${
                 index === 0
                   ? 'text-accent-red'
                   : index === 6

@@ -23,17 +23,17 @@ export default function AllowedForbiddenList({
       {/* 허용 목록 */}
       <View className="flex-1 bg-accent-green/10 rounded-2xl p-4">
         <View className="flex-row items-center mb-3">
-          <Text className="text-lg mr-2">✅</Text>
-          <Text className="text-base font-bold text-accent-green">
+          <Text className="font-sans text-lg mr-2">✅</Text>
+          <Text className="text-base font-heading text-accent-green">
             허용
           </Text>
         </View>
         {allowedItems.map((item) => (
           <View key={item.id} className="mb-2">
-            <Text className="text-sm font-medium text-text-primary dark:text-text-primary-dark">
+            <Text className="font-sans text-sm text-text-primary dark:text-text-primary-dark">
               {item.name}
             </Text>
-            <Text className="text-xs text-text-muted dark:text-text-muted-dark">
+            <Text className="font-sans text-xs text-text-muted dark:text-text-muted-dark">
               {item.description}
             </Text>
           </View>
@@ -43,17 +43,17 @@ export default function AllowedForbiddenList({
       {/* 금지 목록 */}
       <View className="flex-1 bg-accent-red/10 rounded-2xl p-4">
         <View className="flex-row items-center mb-3">
-          <Text className="text-lg mr-2">❌</Text>
-          <Text className="text-base font-bold text-accent-red">
+          <Text className="font-sans text-lg mr-2">❌</Text>
+          <Text className="text-base font-heading text-accent-red">
             금지
           </Text>
         </View>
         {forbiddenItems.map((item) => (
           <View key={item.id} className="mb-2">
-            <Text className="text-sm font-medium text-text-primary dark:text-text-primary-dark">
+            <Text className="font-sans text-sm text-text-primary dark:text-text-primary-dark">
               {item.name}
             </Text>
-            <Text className="text-xs text-text-muted dark:text-text-muted-dark">
+            <Text className="font-sans text-xs text-text-muted dark:text-text-muted-dark">
               {item.description}
             </Text>
           </View>

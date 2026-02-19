@@ -8,6 +8,10 @@ module.exports = {
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['NanumBarunpen-Regular'],
+        heading: ['NanumBarunpen-Bold'],
+      },
       colors: {
         background: {
           DEFAULT: '#F5F5F5',
@@ -49,11 +53,11 @@ module.exports = {
           DEFAULT: '#E5E7EB',
           dark: '#2C2C2E',
         },
-        'accent-green': '#22C55E',
-        'accent-red': '#EF4444',
-        'accent-blue': '#3B82F6',
-        'accent-orange': '#F97316',
-        'accent-purple': '#A855F7',
+        'accent-green': '#5ED99A',
+        'accent-red': '#F78C8C',
+        'accent-blue': '#7AB5FC',
+        'accent-orange': '#FCAB58',
+        'accent-purple': '#C99CFC',
       },
     },
   },

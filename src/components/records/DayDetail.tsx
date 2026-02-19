@@ -40,7 +40,7 @@ export default function DayDetail({ dateKey, records }: DayDetailProps) {
   if (records.length === 0) {
     return (
       <View className="bg-surface dark:bg-surface-dark rounded-2xl p-4 items-center">
-        <Text className="text-text-muted dark:text-text-muted-dark">
+        <Text className="font-sans text-text-muted dark:text-text-muted-dark">
           {formatDateDisplay(dateKey)}에는 기록이 없습니다
         </Text>
       </View>
@@ -49,7 +49,7 @@ export default function DayDetail({ dateKey, records }: DayDetailProps) {
 
   return (
     <View className="bg-surface dark:bg-surface-dark rounded-2xl p-4">
-      <Text className="text-lg font-bold text-text-primary dark:text-text-primary-dark mb-3">
+      <Text className="text-lg font-heading text-text-primary dark:text-text-primary-dark mb-3">
         {formatDateDisplay(dateKey)} 기록
       </Text>
 
@@ -89,7 +89,7 @@ export default function DayDetail({ dateKey, records }: DayDetailProps) {
                 </Svg>
               )}
               <Text
-                className={`text-xs font-medium ml-1 ${
+                className={`font-sans text-xs ml-1 ${
                   record.completed
                     ? 'text-accent-green'
                     : 'text-text-muted dark:text-text-muted-dark'
@@ -103,20 +103,20 @@ export default function DayDetail({ dateKey, records }: DayDetailProps) {
           {/* 시간 정보 */}
           <View className="flex-row justify-between">
             <View className="flex-1">
-              <Text className="text-xs text-text-muted dark:text-text-muted-dark mb-1">시작</Text>
-              <Text className="text-sm font-medium text-text-primary dark:text-text-primary-dark">
+              <Text className="font-sans text-xs text-text-muted dark:text-text-muted-dark mb-1">시작</Text>
+              <Text className="font-sans text-sm text-text-primary dark:text-text-primary-dark">
                 {formatTimeFromISO(record.startTime)}
               </Text>
             </View>
             <View className="flex-1">
-              <Text className="text-xs text-text-muted dark:text-text-muted-dark mb-1">종료</Text>
-              <Text className="text-sm font-medium text-text-primary dark:text-text-primary-dark">
+              <Text className="font-sans text-xs text-text-muted dark:text-text-muted-dark mb-1">종료</Text>
+              <Text className="font-sans text-sm text-text-primary dark:text-text-primary-dark">
                 {record.endTime ? formatTimeFromISO(record.endTime) : '-'}
               </Text>
             </View>
             <View className="flex-1">
-              <Text className="text-xs text-text-muted dark:text-text-muted-dark mb-1">단식 시간</Text>
-              <Text className="text-sm font-medium text-text-primary dark:text-text-primary-dark">
+              <Text className="font-sans text-xs text-text-muted dark:text-text-muted-dark mb-1">단식 시간</Text>
+              <Text className="font-sans text-sm text-text-primary dark:text-text-primary-dark">
                 {formatMinutes(record.actualDuration)}
               </Text>
             </View>

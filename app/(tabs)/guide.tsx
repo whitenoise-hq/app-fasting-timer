@@ -27,10 +27,10 @@ export default function GuideScreen() {
       >
         {/* 헤더 */}
         <View className="mb-6">
-          <Text className="text-2xl font-extrabold text-text-primary dark:text-text-primary-dark mb-1">
+          <Text className="text-2xl font-heading text-text-primary dark:text-text-primary-dark mb-1">
             단식 가이드
           </Text>
-          <Text className="text-sm text-text-muted dark:text-text-muted-dark">
+          <Text className="font-sans text-sm text-text-muted dark:text-text-muted-dark">
             간헐적 단식의 모든 것을 알려드려요
           </Text>
         </View>

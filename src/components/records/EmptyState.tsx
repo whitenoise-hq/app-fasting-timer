@@ -25,10 +25,10 @@ export default function EmptyState() {
       </View>
 
       {/* 텍스트 */}
-      <Text className="text-xl font-bold text-text-primary dark:text-text-primary-dark mb-2">
+      <Text className="text-xl font-heading text-text-primary dark:text-text-primary-dark mb-2">
         아직 단식 기록이 없어요
       </Text>
-      <Text className="text-sm text-text-muted dark:text-text-muted-dark text-center px-8">
+      <Text className="font-sans text-sm text-text-muted dark:text-text-muted-dark text-center px-8">
         첫 번째 단식을 시작하면{'\n'}여기에 기록이 표시됩니다
       </Text>
     </View>

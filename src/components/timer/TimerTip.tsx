@@ -33,7 +33,7 @@ export default function TimerTip({ status }: TimerTipProps) {
           />
         </Svg>
       </View>
-      <Text className="flex-1 text-sm text-text-secondary dark:text-text-secondary-dark">
+      <Text className="font-sans flex-1 text-sm text-text-secondary dark:text-text-secondary-dark">
         {tip}
       </Text>
     </View>

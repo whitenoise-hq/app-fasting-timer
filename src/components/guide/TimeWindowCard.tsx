@@ -24,7 +24,7 @@ export default function TimeWindowCard({ timeWindow, isRecommended }: TimeWindow
     >
       <View className="flex-row items-center justify-between mb-2">
         <Text
-          className={`text-base font-bold ${
+          className={`text-base font-heading ${
             isRecommended
               ? 'text-text-primary dark:text-text-primary-dark'
               : 'text-text-primary dark:text-text-primary-dark'
@@ -34,16 +34,16 @@ export default function TimeWindowCard({ timeWindow, isRecommended }: TimeWindow
         </Text>
         {isRecommended && (
           <View className="bg-btn-primary dark:bg-btn-primary-dark px-2 py-0.5 rounded-full">
-            <Text className="text-xs font-medium text-btn-text dark:text-btn-text-dark">추천</Text>
+            <Text className="font-sans text-xs text-btn-text dark:text-btn-text-dark">추천</Text>
           </View>
         )}
       </View>
 
-      <Text className="text-lg font-semibold mb-2 text-text-primary dark:text-text-primary-dark">
+      <Text className="text-lg font-heading mb-2 text-text-primary dark:text-text-primary-dark">
         {timeWindow.timeRange}
       </Text>
 
-      <Text className="text-sm text-text-secondary dark:text-text-secondary-dark">
+      <Text className="font-sans text-sm text-text-secondary dark:text-text-secondary-dark">
         {timeWindow.description}
       </Text>
     </View>

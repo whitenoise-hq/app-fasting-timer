@@ -19,7 +19,7 @@ export default function TimerButton({ status, onStart, onStop }: TimerButtonProp
       onPress={isFasting ? onStop : onStart}
       className="w-full py-4 rounded-full items-center justify-center bg-btn-primary dark:bg-btn-primary-dark active:opacity-80"
     >
-      <Text className="text-btn-text dark:text-btn-text-dark text-lg font-semibold">
+      <Text className="text-btn-text dark:text-btn-text-dark text-lg font-heading">
         {isFasting ? '단식 종료' : '단식 시작'}
       </Text>
     </Pressable>

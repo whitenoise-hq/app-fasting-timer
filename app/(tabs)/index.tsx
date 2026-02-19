@@ -151,16 +151,16 @@ export default function HomeScreen() {
               style={{ width: size, height: size }}
             >
               <Text
-                className="text-sm font-medium mb-1"
+                className="font-sans text-sm mb-1"
                 style={{ color: theme.textSecondary }}
               >
                 {statusText}
               </Text>
-              <Text className="text-5xl font-bold text-text-primary dark:text-text-primary-dark">
+              <Text className="text-5xl font-heading text-text-primary dark:text-text-primary-dark">
                 {formatDuration(remainingMs)}
               </Text>
               {isFasting && (
-                <Text className="text-sm text-text-muted dark:text-text-muted-dark mt-2">
+                <Text className="font-sans text-sm text-text-muted dark:text-text-muted-dark mt-2">
                   {Math.round(progress * 100)}% 완료
                 </Text>
               )}
@@ -181,7 +181,7 @@ export default function HomeScreen() {
                 strokeLinejoin="round"
               />
             </Svg>
-            <Text className="flex-1 text-sm text-text-secondary dark:text-text-secondary-dark">
+            <Text className="font-sans flex-1 text-sm text-text-secondary dark:text-text-secondary-dark">
               {isFasting ? '물, 블랙커피, 무가당 차는 OK!' : '오늘도 건강한 단식을 시작해보세요!'}
             </Text>
           </View>
@@ -189,29 +189,29 @@ export default function HomeScreen() {
           {/* 플랜 정보 */}
           <View className="w-full bg-surface dark:bg-surface-dark border border-border-custom dark:border-border-custom-dark rounded-2xl p-4">
             <View className="flex-row items-center justify-center mb-3">
-              <Text className="text-lg font-bold text-text-primary dark:text-text-primary-dark">{planName}</Text>
+              <Text className="text-lg font-heading text-text-primary dark:text-text-primary-dark">{planName}</Text>
               <View className="ml-2 px-2.5 py-0.5 bg-accent-green rounded-full">
-                <Text className="text-xs font-medium text-white">{planLabel}</Text>
+                <Text className="font-sans text-xs text-white">{planLabel}</Text>
               </View>
             </View>
             {startTime && targetEndTime ? (
               <View className="flex-row justify-between">
                 <View className="items-center flex-1">
-                  <Text className="text-xs text-text-muted dark:text-text-muted-dark mb-1">시작</Text>
-                  <Text className="text-base font-semibold text-text-primary dark:text-text-primary-dark">
+                  <Text className="font-sans text-xs text-text-muted dark:text-text-muted-dark mb-1">시작</Text>
+                  <Text className="text-base font-heading text-text-primary dark:text-text-primary-dark">
                     {formatTime(startTime)}
                   </Text>
                 </View>
                 <View className="w-px bg-border-custom dark:bg-border-custom-dark mx-4" />
                 <View className="items-center flex-1">
-                  <Text className="text-xs text-text-muted dark:text-text-muted-dark mb-1">목표</Text>
-                  <Text className="text-base font-semibold text-text-primary dark:text-text-primary-dark">
+                  <Text className="font-sans text-xs text-text-muted dark:text-text-muted-dark mb-1">목표</Text>
+                  <Text className="text-base font-heading text-text-primary dark:text-text-primary-dark">
                     {formatTime(targetEndTime)}
                   </Text>
                 </View>
               </View>
             ) : (
-              <Text className="text-center text-sm text-text-muted dark:text-text-muted-dark">
+              <Text className="font-sans text-center text-sm text-text-muted dark:text-text-muted-dark">
                 단식을 시작하면 시간 정보가 표시됩니다
               </Text>
             )}
@@ -222,7 +222,7 @@ export default function HomeScreen() {
             onPress={isFasting ? handleStop : handleStart}
             className="w-full py-4 rounded-full items-center justify-center bg-btn-primary dark:bg-btn-primary-dark active:opacity-80"
           >
-            <Text className="text-btn-text dark:text-btn-text-dark text-lg font-semibold">
+            <Text className="text-btn-text dark:text-btn-text-dark text-lg font-heading">
               {isFasting ? '단식 종료' : '단식 시작'}
             </Text>
           </Pressable>

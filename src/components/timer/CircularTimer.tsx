@@ -79,16 +79,16 @@ export default function CircularTimer({
           style={{ width: size, height: size }}
         >
           <Text
-            className="text-sm font-medium mb-1"
+            className="font-sans text-sm mb-1"
             style={{ color: theme.textSecondary }}
           >
             {getStatusText()}
           </Text>
-          <Text className="text-5xl font-bold text-text-primary dark:text-text-primary-dark">
+          <Text className="text-5xl font-heading text-text-primary dark:text-text-primary-dark">
             {remainingTime}
           </Text>
           {status === 'fasting' && (
-            <Text className="text-sm text-text-muted dark:text-text-muted-dark mt-2">
+            <Text className="font-sans text-sm text-text-muted dark:text-text-muted-dark mt-2">
               {Math.round(progress * 100)}% 완료
             </Text>
           )}
