@@ -1,7 +1,9 @@
-import { View, Text, Pressable, Alert } from 'react-native';
+import { useState } from 'react';
+import { View, Text, Pressable } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import type { FastingRecord } from '../../types';
 import { ACCENT } from '../../constants/colors';
+import { Modal } from '../common';
 
 interface DayDetailProps {
   /** 선택된 날짜 */
@@ -39,16 +41,14 @@ function formatDateDisplay(dateKey: string): string {
 
 /** 선택된 날짜의 상세 기록 표시 */
 export default function DayDetail({ dateKey, records, onDeleteRecord }: DayDetailProps) {
-  /** 삭제 확인 Alert */
-  const handleDelete = (recordId: string) => {
-    Alert.alert(
-      '기록 삭제',
-      '이 기록을 삭제하시겠습니까?',
-      [
-        { text: '취소', style: 'cancel' },
-        { text: '삭제', style: 'destructive', onPress: () => onDeleteRecord(recordId) },
-      ],
-    );
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+
+  /** 삭제 확인 */
+  const handleConfirmDelete = () => {
+    if (deleteTargetId) {
+      onDeleteRecord(deleteTargetId);
+      setDeleteTargetId(null);
+    }
   };
 
   if (records.length === 0) {
@@ -115,7 +115,7 @@ export default function DayDetail({ dateKey, records, onDeleteRecord }: DayDetai
 
             {/* 삭제 버튼 */}
             <Pressable
-              onPress={() => handleDelete(record.id)}
+              onPress={() => setDeleteTargetId(record.id)}
               className="flex-row items-center px-2 py-1 rounded-full active:bg-accent-red/10"
             >
               <Svg width={14} height={14} viewBox="0 0 24 24" fill="none">
@@ -154,6 +154,18 @@ export default function DayDetail({ dateKey, records, onDeleteRecord }: DayDetai
           </View>
         </View>
       ))}
+
+      <Modal
+        visible={deleteTargetId !== null}
+        type="confirm"
+        emoji="🗑️"
+        title="기록 삭제"
+        message="이 기록을 삭제하시겠습니까?"
+        confirmText="삭제"
+        cancelText="취소"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setDeleteTargetId(null)}
+      />
     </View>
   );
 }
