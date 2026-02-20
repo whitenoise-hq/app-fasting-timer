@@ -77,6 +77,8 @@ interface ModalProps {
   children?: ReactNode;
   /** 배경 탭으로 닫기 비활성화 */
   disableBackdropClose?: boolean;
+  /** 확인 버튼을 위험 스타일(빨간색)로 표시 */
+  danger?: boolean;
 }
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -94,6 +96,7 @@ export default function Modal({
   onCancel,
   children,
   disableBackdropClose = false,
+  danger = false,
 }: ModalProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.9)).current;
@@ -144,7 +147,9 @@ export default function Modal({
   const renderConfirmButton = () => (
     <Pressable
       onPress={onConfirm}
-      className="flex-1 py-3.5 bg-btn-primary rounded-full items-center justify-center active:opacity-80"
+      className={`flex-1 py-3.5 rounded-full items-center justify-center active:opacity-80 ${
+        danger ? 'bg-accent-red' : 'bg-btn-primary'
+      }`}
     >
       <Text className="text-white font-heading text-base">{confirmText}</Text>
     </Pressable>
@@ -197,7 +202,7 @@ export default function Modal({
         )}
         {message && (
           <Text className="text-sm font-sans text-text-secondary text-center mt-2">
-            {message}
+            {message.replace(/\\n/g, '\n')}
           </Text>
         )}
         {renderButtons()}

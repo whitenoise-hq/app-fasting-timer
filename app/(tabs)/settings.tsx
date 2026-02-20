@@ -128,7 +128,7 @@ export default function SettingsScreen() {
         <SettingSection title="데이터">
           <DangerButton
             title="모든 데이터 초기화"
-            confirmMessage="모든 설정과 단식 기록이 삭제됩니다. 이 작업은 되돌릴 수 없습니다."
+            confirmMessage="모든 설정과 단식 기록이 삭제됩니다. \n이 작업은 되돌릴 수 없습니다."
             onConfirm={handleResetAllData}
           />
         </SettingSection>

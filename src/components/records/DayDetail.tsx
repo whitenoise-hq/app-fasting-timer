@@ -158,11 +158,11 @@ export default function DayDetail({ dateKey, records, onDeleteRecord }: DayDetai
       <Modal
         visible={deleteTargetId !== null}
         type="confirm"
-        emoji="🗑️"
         title="기록 삭제"
         message="이 기록을 삭제하시겠습니까?"
         confirmText="삭제"
         cancelText="취소"
+        danger={true}
         onConfirm={handleConfirmDelete}
         onCancel={() => setDeleteTargetId(null)}
       />

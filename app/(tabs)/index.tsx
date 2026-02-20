@@ -259,7 +259,6 @@ export default function HomeScreen() {
       <Modal
         visible={showEndModal}
         type="confirm"
-        emoji="🎉"
         title="단식이 종료되었습니다"
         message="기록을 확인해보세요"
         confirmText="기록 보기"

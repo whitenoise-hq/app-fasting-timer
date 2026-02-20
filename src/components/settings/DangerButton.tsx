@@ -36,9 +36,9 @@ export default function DangerButton({
       <Modal
         visible={visible}
         type="confirm"
-        emoji="⚠️"
-        title="확인"
+        title={title}
         message={confirmMessage}
+        danger={true}
         confirmText="확인"
         cancelText="취소"
         onConfirm={handleConfirm}
