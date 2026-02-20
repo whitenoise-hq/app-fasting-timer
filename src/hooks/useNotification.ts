@@ -4,29 +4,19 @@ import type { NotificationSettings, FastingPlan } from '../types';
 
 /** 알림 ID 저장 타입 */
 interface ScheduledNotificationIds {
-  fastingStart: string | null;
   fastingEnd: string | null;
   eatingReminder: string | null;
-  halfwayCheer: string | null;
 }
 
 /** 알림 메시지 */
 const NOTIFICATION_MESSAGES = {
-  fastingStart: {
-    title: '단식 시작',
-    body: '단식이 시작되었습니다 💪 목표까지 화이팅!',
-  },
-  halfwayCheer: {
-    title: '절반 달성!',
-    body: '절반 지났어요! 잘하고 있습니다 🔥',
+  fastingEnd: {
+    title: '단식 완료!',
+    body: '단식 완료! 식사를 시작하세요 🎉',
   },
   eatingReminder: {
     title: '식사 시간 알림',
     body: '30분 후 단식이 시작됩니다 🍽️',
-  },
-  fastingEnd: {
-    title: '단식 완료!',
-    body: '단식 완료! 식사를 시작하세요 🎉',
   },
 };
 
@@ -52,10 +42,8 @@ export type PermissionStatus = 'granted' | 'denied' | 'undetermined';
  */
 export function useNotification() {
   const scheduledIdsRef = useRef<ScheduledNotificationIds>({
-    fastingStart: null,
     fastingEnd: null,
     eatingReminder: null,
-    halfwayCheer: null,
   });
 
   /** 알림 권한 요청 */
@@ -80,10 +68,8 @@ export function useNotification() {
   const cancelAllNotifications = useCallback(async () => {
     await Notifications.cancelAllScheduledNotificationsAsync();
     scheduledIdsRef.current = {
-      fastingStart: null,
       fastingEnd: null,
       eatingReminder: null,
-      halfwayCheer: null,
     };
   }, []);
 
@@ -138,33 +124,18 @@ export function useNotification() {
       const fastingMs = plan.fastingHours * 60 * 60 * 1000;
       const eatingMs = plan.eatingHours * 60 * 60 * 1000;
 
-      // 1. 단식 시작 알림 (즉시 - 시작 버튼 누른 시점)
-      if (settings.fastingStart) {
-        // 즉시 알림은 1초 뒤로 설정
-        const triggerDate = new Date(startDate.getTime() + 1000);
-        const id = await scheduleNotification('fastingStart', triggerDate);
-        scheduledIdsRef.current.fastingStart = id;
-      }
-
-      // 2. 중간 격려 알림 (단식 시간의 50% 지점)
-      if (settings.halfwayCheer) {
-        const halfwayTime = startDate.getTime() + fastingMs / 2;
-        const id = await scheduleNotification('halfwayCheer', new Date(halfwayTime));
-        scheduledIdsRef.current.halfwayCheer = id;
-      }
-
-      // 3. 식사 종료 30분 전 리마인더 (단식 종료 + 식사 시간 - 30분)
-      if (settings.eatingReminder) {
-        const eatingEndTime = startDate.getTime() + fastingMs + eatingMs - 30 * 60 * 1000;
-        const id = await scheduleNotification('eatingReminder', new Date(eatingEndTime));
-        scheduledIdsRef.current.eatingReminder = id;
-      }
-
-      // 4. 단식 종료 알림 (목표 단식 시간 도달)
+      // 1. 단식 종료 알림 (목표 단식 시간 도달)
       if (settings.fastingEnd) {
         const endTime = startDate.getTime() + fastingMs;
         const id = await scheduleNotification('fastingEnd', new Date(endTime));
         scheduledIdsRef.current.fastingEnd = id;
+      }
+
+      // 2. 식사 종료 30분 전 리마인더 (단식 종료 + 식사 시간 - 30분)
+      if (settings.eatingReminder) {
+        const eatingEndTime = startDate.getTime() + fastingMs + eatingMs - 30 * 60 * 1000;
+        const id = await scheduleNotification('eatingReminder', new Date(eatingEndTime));
+        scheduledIdsRef.current.eatingReminder = id;
       }
     },
     [cancelAllNotifications, scheduleNotification]

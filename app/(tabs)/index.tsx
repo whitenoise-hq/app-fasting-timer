@@ -196,7 +196,7 @@ export default function HomeScreen() {
       setShowStopConfirmModal(true);
     } else if (isEating) {
       // 식사 중 종료 → 바로 종료 (단식은 이미 완료)
-      handleEatingStop();
+      void handleEatingStop();
     }
   };
 
@@ -327,8 +327,8 @@ export default function HomeScreen() {
           <View className="w-full bg-surface border border-border-custom rounded-2xl p-4">
             <View className="flex-row items-center justify-center mb-3">
               <Text className="text-lg font-heading text-text-primary">{planName}</Text>
-              <View className="ml-2 px-2.5 py-0.5 bg-accent-green rounded-full">
-                <Text className="font-sans text-xs text-white">{planLabel}</Text>
+              <View className="ml-2 px-3 py-1 bg-accent-green rounded-full">
+                <Text className="font-sans text-xs text-white" numberOfLines={1}>{planLabel}</Text>
               </View>
             </View>
             {currentStartTime && currentTargetEndTime ? (
@@ -372,6 +372,18 @@ export default function HomeScreen() {
               {buttonText}
             </Text>
           </Pressable>
+
+          {/* 플랜 변경 링크 (idle 상태에서만 표시) */}
+          {!isActive && (
+            <Pressable
+              onPress={() => router.push('/settings')}
+              className="mt-3 self-center"
+            >
+              <Text className="font-sans text-sm text-text-secondary underline">
+                단식 플랜 변경
+              </Text>
+            </Pressable>
+          )}
         </View>
       </View>
 
@@ -392,7 +404,6 @@ export default function HomeScreen() {
       <Modal
         visible={showEndModal}
         type="confirm"
-        emoji={endType === 'natural_completion' ? '🎉' : endType === 'eating_early' ? '👍' : '📝'}
         title={
           endType === 'natural_completion'
             ? '오늘의 단식을 완료했어요!'

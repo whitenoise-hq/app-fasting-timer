@@ -1,5 +1,8 @@
+import { useRef, useEffect } from 'react';
 import { View, ScrollView, Text } from 'react-native';
+import type { ScrollView as ScrollViewType } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from 'expo-router';
 import {
   PlanCard,
   GuideSection,
@@ -18,9 +21,34 @@ import {
 } from '../../src/constants/guide';
 
 export default function GuideScreen() {
+  const scrollViewRef = useRef<ScrollViewType>(null);
+  const navigation = useNavigation();
+  const isFocusedRef = useRef(false);
+
+  // 현재 탭을 다시 누르면 스크롤 최상단으로 이동
+  useEffect(() => {
+    const unsubscribeFocus = (navigation as any).addListener('focus', () => {
+      isFocusedRef.current = true;
+    });
+    const unsubscribeBlur = (navigation as any).addListener('blur', () => {
+      isFocusedRef.current = false;
+    });
+    const unsubscribeTabPress = (navigation as any).addListener('tabPress', () => {
+      if (isFocusedRef.current) {
+        scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+      }
+    });
+    return () => {
+      unsubscribeFocus();
+      unsubscribeBlur();
+      unsubscribeTabPress();
+    };
+  }, [navigation]);
+
   return (
     <SafeAreaView className="flex-1 bg-background">
       <ScrollView
+        ref={scrollViewRef}
         className="flex-1"
         contentContainerStyle={{ padding: 16 }}
         showsVerticalScrollIndicator={false}

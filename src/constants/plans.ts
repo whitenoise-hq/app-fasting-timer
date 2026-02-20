@@ -16,7 +16,7 @@ export const DEFAULT_PLANS: FastingPlan[] = [
   },
   {
     id: '12-12',
-    name: '12:12',
+    name: '12:12 단식',
     label: '입문용',
     fastingHours: 12,
     eatingHours: 12,

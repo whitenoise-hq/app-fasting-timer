@@ -21,10 +21,8 @@ export interface FastingRecord {
 
 /** 알림 설정 */
 export interface NotificationSettings {
-  fastingStart: boolean;
   fastingEnd: boolean;
   eatingReminder: boolean;
-  halfwayCheer: boolean;
 }
 
 /** 사용자 설정 */

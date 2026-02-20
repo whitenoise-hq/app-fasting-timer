@@ -25,10 +25,8 @@ const initialState: SettingsState = {
   customFastingHours: null,
   customEatingHours: null,
   notifications: {
-    fastingStart: true,
     fastingEnd: true,
     eatingReminder: true,
-    halfwayCheer: false,
   },
 };
 

@@ -1,6 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, ScrollView, Pressable, Linking, Platform } from 'react-native';
+import type { ScrollView as ScrollViewType } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
 import {
   SettingSection,
@@ -35,6 +37,29 @@ export default function SettingsScreen() {
   const isTimerActive = timerStatus === 'fasting' || timerStatus === 'eating';
   const { getPermissionStatus, scheduleNotifications } = useNotification();
   const [permissionStatus, setPermissionStatus] = useState<PermissionStatus>('undetermined');
+  const scrollViewRef = useRef<ScrollViewType>(null);
+  const navigation = useNavigation();
+  const isFocusedRef = useRef(true);
+
+  // 현재 탭을 다시 누르면 스크롤 최상단으로 이동
+  useEffect(() => {
+    const unsubscribeFocus = (navigation as any).addListener('focus', () => {
+      isFocusedRef.current = true;
+    });
+    const unsubscribeBlur = (navigation as any).addListener('blur', () => {
+      isFocusedRef.current = false;
+    });
+    const unsubscribeTabPress = (navigation as any).addListener('tabPress', () => {
+      if (isFocusedRef.current) {
+        scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+      }
+    });
+    return () => {
+      unsubscribeFocus();
+      unsubscribeBlur();
+      unsubscribeTabPress();
+    };
+  }, [navigation]);
 
   // 현재 플랜 정보
   const plan = getPlanById(selectedPlanId);
@@ -89,6 +114,7 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView className="flex-1 bg-background">
       <ScrollView
+        ref={scrollViewRef}
         className="flex-1"
         contentContainerStyle={{ padding: 16 }}
         showsVerticalScrollIndicator={false}
@@ -151,12 +177,6 @@ export default function SettingsScreen() {
             ) : (
               <>
                 <SettingToggle
-                  title="단식 시작 알림"
-                  description="단식이 시작되면 알려드려요"
-                  value={notifications.fastingStart}
-                  onValueChange={(v) => handleNotificationChange('fastingStart', v)}
-                />
-                <SettingToggle
                   title="단식 종료 알림"
                   description="목표 단식 시간에 도달하면 알려드려요"
                   value={notifications.fastingEnd}
@@ -167,12 +187,6 @@ export default function SettingsScreen() {
                   description="식사 시간 마감 30분 전에 알려드려요"
                   value={notifications.eatingReminder}
                   onValueChange={(v) => handleNotificationChange('eatingReminder', v)}
-                />
-                <SettingToggle
-                  title="중간 격려 알림"
-                  description="단식 절반 지점에서 응원 메시지를 보내드려요"
-                  value={notifications.halfwayCheer}
-                  onValueChange={(v) => handleNotificationChange('halfwayCheer', v)}
                 />
               </>
             )}
