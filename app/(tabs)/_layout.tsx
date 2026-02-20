@@ -1,5 +1,6 @@
 import { Tabs } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { THEME } from '../../src/constants/colors';
 
 interface TabIconProps {
@@ -71,6 +72,8 @@ function SettingsIcon({ color, size }: TabIconProps) {
 }
 
 export default function TabLayout() {
+  const insets = useSafeAreaInsets();
+
   return (
     <Tabs
       screenOptions={{
@@ -80,8 +83,8 @@ export default function TabLayout() {
         tabBarStyle: {
           backgroundColor: THEME.surface,
           borderTopColor: THEME.border,
-          height: 60,
-          paddingBottom: 8,
+          height: 60 + insets.bottom,
+          paddingBottom: 8 + insets.bottom,
           paddingTop: 8,
         },
         tabBarLabelStyle: {

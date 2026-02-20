@@ -5,15 +5,19 @@ import type { TimerStatus, FastingRecord } from '../types';
 
 interface TimerState {
   status: TimerStatus;
-  startTime: string | null;
-  targetEndTime: string | null;
+  fastingStartTime: string | null;
+  fastingTargetEndTime: string | null;
+  eatingStartTime: string | null;
+  eatingTargetEndTime: string | null;
   currentRecordId: string | null;
+  isFastingCompleted: boolean;
   records: FastingRecord[];
 }
 
 interface TimerActions {
-  startFasting: (fastingHours: number) => void;
-  stopFasting: (completed: boolean, planId: string) => void;
+  startFasting: (fastingHours: number, eatingHours: number) => void;
+  transitionToEating: (eatingHours: number) => void;
+  stopTimer: (planId: string) => void;
   deleteRecord: (recordId: string) => void;
   reset: () => void;
 }
@@ -22,9 +26,12 @@ type TimerStore = TimerState & TimerActions;
 
 const initialState: TimerState = {
   status: 'idle',
-  startTime: null,
-  targetEndTime: null,
+  fastingStartTime: null,
+  fastingTargetEndTime: null,
+  eatingStartTime: null,
+  eatingTargetEndTime: null,
   currentRecordId: null,
+  isFastingCompleted: false,
   records: [],
 };
 
@@ -39,36 +46,74 @@ export const useTimerStore = create<TimerStore>()(
       ...initialState,
 
       /** 단식 시작 */
-      startFasting: (fastingHours: number) => {
+      startFasting: (fastingHours: number, eatingHours: number) => {
         const now = new Date();
-        const targetEnd = new Date(now.getTime() + fastingHours * 60 * 60 * 1000);
+        const fastingEnd = new Date(now.getTime() + fastingHours * 60 * 60 * 1000);
+        const eatingEnd = new Date(fastingEnd.getTime() + eatingHours * 60 * 60 * 1000);
         const recordId = generateId();
 
         set({
           status: 'fasting',
-          startTime: now.toISOString(),
-          targetEndTime: targetEnd.toISOString(),
+          fastingStartTime: now.toISOString(),
+          fastingTargetEndTime: fastingEnd.toISOString(),
+          eatingStartTime: null,
+          eatingTargetEndTime: eatingEnd.toISOString(),
           currentRecordId: recordId,
+          isFastingCompleted: false,
         });
       },
 
-      /** 단식 종료 및 기록 저장 */
-      stopFasting: (completed: boolean, planId: string) => {
-        const { startTime, targetEndTime, currentRecordId, records } = get();
+      /** 단식 완료 → 식사 중으로 전환 */
+      transitionToEating: (eatingHours: number) => {
+        const now = new Date();
+        const eatingEnd = new Date(now.getTime() + eatingHours * 60 * 60 * 1000);
 
-        if (!startTime || !currentRecordId) return;
+        set({
+          status: 'eating',
+          eatingStartTime: now.toISOString(),
+          eatingTargetEndTime: eatingEnd.toISOString(),
+          isFastingCompleted: true,
+        });
+      },
+
+      /** 타이머 종료 및 기록 저장 */
+      stopTimer: (planId: string) => {
+        const {
+          status,
+          fastingStartTime,
+          fastingTargetEndTime,
+          currentRecordId,
+          isFastingCompleted,
+          records,
+        } = get();
+
+        if (!fastingStartTime || !currentRecordId) return;
 
         const now = new Date();
-        const start = new Date(startTime);
-        const actualDuration = Math.floor((now.getTime() - start.getTime()) / (1000 * 60));
-        const targetDuration = targetEndTime
-          ? Math.floor((new Date(targetEndTime).getTime() - start.getTime()) / (1000 * 60))
+        const start = new Date(fastingStartTime);
+
+        // 단식 실제 시간 계산
+        let actualDuration: number;
+        if (status === 'fasting') {
+          // 단식 중 종료: 현재까지의 단식 시간
+          actualDuration = Math.floor((now.getTime() - start.getTime()) / (1000 * 60));
+        } else {
+          // 식사 중 종료: 단식 목표 시간 (100% 완료했으므로)
+          const fastingEnd = fastingTargetEndTime ? new Date(fastingTargetEndTime) : now;
+          actualDuration = Math.floor((fastingEnd.getTime() - start.getTime()) / (1000 * 60));
+        }
+
+        const targetDuration = fastingTargetEndTime
+          ? Math.floor((new Date(fastingTargetEndTime).getTime() - start.getTime()) / (1000 * 60))
           : 0;
+
+        // 단식 100% 완료 여부로 completed 결정
+        const completed = isFastingCompleted || status === 'eating';
 
         const newRecord: FastingRecord = {
           id: currentRecordId,
           planId,
-          startTime,
+          startTime: fastingStartTime,
           endTime: now.toISOString(),
           targetDuration,
           actualDuration,
@@ -76,10 +121,7 @@ export const useTimerStore = create<TimerStore>()(
         };
 
         set({
-          status: 'idle',
-          startTime: null,
-          targetEndTime: null,
-          currentRecordId: null,
+          ...initialState,
           records: [...records, newRecord],
         });
       },

@@ -20,21 +20,35 @@ interface UseTimerReturn {
   planName: string;
   /** 현재 플랜 라벨 */
   planLabel: string;
+  /** 단식 중인지 */
+  isFasting: boolean;
+  /** 식사 중인지 */
+  isEating: boolean;
+  /** 타이머 활성 상태 */
+  isActive: boolean;
   /** 단식 시작 */
   startFasting: () => void;
-  /** 단식 종료 */
-  stopFasting: () => void;
+  /** 타이머 종료 */
+  stopTimer: () => void;
 }
 
 /**
  * 타이머 로직을 관리하는 커스텀 훅
  * - 백그라운드 복귀 시 startTime 기준으로 재계산
  * - setInterval은 UI 업데이트용으로만 사용
+ * - 단식 → 식사 → 단식 두 단계 사이클 지원
  */
 export function useTimer(): UseTimerReturn {
-  const { status, startTime, targetEndTime, startFasting: storeStartFasting, stopFasting: storeStopFasting } =
-    useTimerStore();
-  const { selectedPlanId, customFastingHours } = useSettingsStore();
+  const {
+    status,
+    fastingStartTime,
+    fastingTargetEndTime,
+    eatingStartTime,
+    eatingTargetEndTime,
+    startFasting: storeStartFasting,
+    stopTimer: storeStopTimer,
+  } = useTimerStore();
+  const { selectedPlanId, customFastingHours, customEatingHours } = useSettingsStore();
 
   const [remainingMs, setRemainingMs] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -43,25 +57,32 @@ export function useTimer(): UseTimerReturn {
   /** 현재 플랜 정보 가져오기 */
   const plan = getPlanById(selectedPlanId);
   const fastingHours = plan?.fastingHours ?? customFastingHours ?? 16;
-  const planName = plan?.name ?? `${customFastingHours}:${24 - (customFastingHours ?? 16)}`;
+  const eatingHours = plan?.eatingHours ?? customEatingHours ?? 8;
+  const planName = plan?.name ?? `${customFastingHours ?? 16}:${24 - (customFastingHours ?? 16)}`;
   const planLabel = plan?.label ?? '커스텀';
+
+  const isFasting = status === 'fasting';
+  const isEating = status === 'eating';
+  const isActive = isFasting || isEating;
+
+  /** 현재 단계의 시작/목표 시간 */
+  const currentStartTime = isFasting ? fastingStartTime : eatingStartTime;
+  const currentTargetEndTime = isFasting ? fastingTargetEndTime : eatingTargetEndTime;
 
   /** 타이머 상태 업데이트 (startTime 기준 재계산) */
   const updateTimerState = useCallback(() => {
-    if (status !== 'fasting' || !startTime || !targetEndTime) {
+    if (!isActive || !currentStartTime || !currentTargetEndTime) {
       setRemainingMs(0);
       setProgress(0);
       return;
     }
 
-    const remaining = getRemainingMs(targetEndTime);
-    const currentProgress = getProgress(startTime, targetEndTime);
+    const remaining = getRemainingMs(currentTargetEndTime);
+    const currentProgress = getProgress(currentStartTime, currentTargetEndTime);
 
     setRemainingMs(remaining);
     setProgress(currentProgress);
-
-    // 목표 시간 도달 시 자동 종료하지 않음 (사용자가 직접 종료)
-  }, [status, startTime, targetEndTime]);
+  }, [isActive, currentStartTime, currentTargetEndTime]);
 
   /** 앱 상태 변화 감지 (백그라운드 → 포그라운드) */
   useEffect(() => {
@@ -77,7 +98,7 @@ export function useTimer(): UseTimerReturn {
 
   /** 타이머 인터벌 관리 */
   useEffect(() => {
-    if (status === 'fasting') {
+    if (isActive) {
       updateTimerState();
       intervalRef.current = setInterval(updateTimerState, 1000);
     } else {
@@ -95,28 +116,30 @@ export function useTimer(): UseTimerReturn {
         intervalRef.current = null;
       }
     };
-  }, [status, updateTimerState]);
+  }, [isActive, updateTimerState]);
 
   /** 단식 시작 */
   const startFasting = useCallback(() => {
-    storeStartFasting(fastingHours);
-  }, [storeStartFasting, fastingHours]);
+    storeStartFasting(fastingHours, eatingHours);
+  }, [storeStartFasting, fastingHours, eatingHours]);
 
-  /** 단식 종료 */
-  const stopFasting = useCallback(() => {
-    const completed = progress >= 1;
-    storeStopFasting(completed, selectedPlanId);
-  }, [storeStopFasting, progress, selectedPlanId]);
+  /** 타이머 종료 */
+  const stopTimer = useCallback(() => {
+    storeStopTimer(selectedPlanId);
+  }, [storeStopTimer, selectedPlanId]);
 
   return {
     status,
     remainingTime: formatDuration(remainingMs),
     progress,
-    startTimeDisplay: startTime ? formatTime(startTime) : null,
-    targetEndDisplay: targetEndTime ? formatTime(targetEndTime) : null,
+    startTimeDisplay: currentStartTime ? formatTime(currentStartTime) : null,
+    targetEndDisplay: currentTargetEndTime ? formatTime(currentTargetEndTime) : null,
     planName,
     planLabel,
+    isFasting,
+    isEating,
+    isActive,
     startFasting,
-    stopFasting,
+    stopTimer,
   };
 }

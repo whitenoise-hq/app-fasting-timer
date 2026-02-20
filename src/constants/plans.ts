@@ -5,6 +5,15 @@ export const DEFAULT_PLAN_ID = '16-8';
 
 /** 기본 제공 단식 플랜 목록 */
 export const DEFAULT_PLANS: FastingPlan[] = [
+  // TODO: 테스트 후 삭제
+  {
+    id: 'test',
+    name: 'TEST',
+    label: '테스트용',
+    fastingHours: 0.01,
+    eatingHours: 0.01,
+    description: '테스트용 플랜 (각 약 1분)',
+  },
   {
     id: '12-12',
     name: '12:12',

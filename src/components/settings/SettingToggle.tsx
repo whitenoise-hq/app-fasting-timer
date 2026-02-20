@@ -16,8 +16,6 @@ interface SettingToggleProps {
   value: boolean;
   /** 변경 핸들러 */
   onValueChange: (value: boolean) => void;
-  /** 구분선 표시 여부 */
-  showDivider?: boolean;
 }
 
 /** 설정 토글 스위치 */
@@ -26,7 +24,6 @@ export default function SettingToggle({
   description,
   value,
   onValueChange,
-  showDivider = true,
 }: SettingToggleProps) {
   const animValue = useRef(new Animated.Value(value ? 1 : 0)).current;
 
@@ -87,7 +84,6 @@ export default function SettingToggle({
           </Animated.View>
         </Pressable>
       </View>
-      {showDivider && <View className="h-px bg-border-custom ml-4" />}
     </View>
   );
 }

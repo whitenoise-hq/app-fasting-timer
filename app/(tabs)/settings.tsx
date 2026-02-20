@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { View, Text, ScrollView, Pressable, Linking, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Svg, { Path } from 'react-native-svg';
 import {
   SettingSection,
   SettingToggle,
@@ -10,6 +11,9 @@ import {
 import { useSettingsStore } from '../../src/stores/settingsStore';
 import { useTimerStore } from '../../src/stores/timerStore';
 import { useNotification, PermissionStatus } from '../../src/hooks/useNotification';
+import { THEME } from '../../src/constants/colors';
+import { getPlanById } from '../../src/constants/plans';
+import type { NotificationSettings, FastingPlan } from '../../src/types';
 
 const APP_VERSION = '1.0.0';
 
@@ -26,8 +30,22 @@ export default function SettingsScreen() {
   } = useSettingsStore();
 
   const resetTimer = useTimerStore((state) => state.reset);
-  const { getPermissionStatus, requestPermissions } = useNotification();
+  const timerStatus = useTimerStore((state) => state.status);
+  const fastingStartTime = useTimerStore((state) => state.fastingStartTime);
+  const isTimerActive = timerStatus === 'fasting' || timerStatus === 'eating';
+  const { getPermissionStatus, scheduleNotifications } = useNotification();
   const [permissionStatus, setPermissionStatus] = useState<PermissionStatus>('undetermined');
+
+  // 현재 플랜 정보
+  const plan = getPlanById(selectedPlanId);
+  const currentPlan: FastingPlan = plan ?? {
+    id: 'custom',
+    name: `${customFastingHours ?? 16}:${customEatingHours ?? 8}`,
+    label: '커스텀',
+    fastingHours: customFastingHours ?? 16,
+    eatingHours: customEatingHours ?? 8,
+    description: '커스텀 플랜',
+  };
 
   /** 권한 상태 확인 */
   const checkPermission = useCallback(async () => {
@@ -54,6 +72,20 @@ export default function SettingsScreen() {
     resetTimer();
   };
 
+  /** 알림 설정 변경 핸들러 (타이머 활성 중이면 재스케줄링) */
+  const handleNotificationChange = useCallback(
+    async (key: keyof NotificationSettings, value: boolean) => {
+      setNotification(key, value);
+
+      // 타이머 활성 중이면 알림 재스케줄링
+      if (isTimerActive && fastingStartTime) {
+        const updatedNotifications = { ...notifications, [key]: value };
+        await scheduleNotifications(fastingStartTime, currentPlan, updatedNotifications);
+      }
+    },
+    [isTimerActive, fastingStartTime, notifications, currentPlan, setNotification, scheduleNotifications]
+  );
+
   return (
     <SafeAreaView className="flex-1 bg-background">
       <ScrollView
@@ -70,58 +102,81 @@ export default function SettingsScreen() {
 
         {/* 단식 플랜 */}
         <SettingSection title="단식 플랜">
-          <PlanSelector
-            selectedPlanId={selectedPlanId}
-            customFastingHours={customFastingHours}
-            customEatingHours={customEatingHours}
-            onSelectPlan={setSelectedPlan}
-            onSetCustomHours={setCustomHours}
-          />
+          <View className="relative">
+            <PlanSelector
+              selectedPlanId={selectedPlanId}
+              customFastingHours={customFastingHours}
+              customEatingHours={customEatingHours}
+              onSelectPlan={setSelectedPlan}
+              onSetCustomHours={setCustomHours}
+            />
+            {/* 타이머 진행 중 오버레이 */}
+            {isTimerActive && (
+              <View className="absolute inset-0 bg-background/70 border border-border-custom rounded-2xl overflow-hidden items-center justify-center">
+                <Svg width={32} height={32} viewBox="0 0 24 24" fill="none">
+                  <Path
+                    d="M12 2a10 10 0 100 20 10 10 0 000-20zM12 16v-4M12 8h.01"
+                    stroke={THEME.textSecondary}
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </Svg>
+                <Text className="font-sans text-sm text-text-primary mt-3 text-center">
+                  타이머가 진행 중일 때는
+                </Text>
+                <Text className="font-sans text-sm text-text-primary text-center">
+                  플랜 변경이 불가능합니다.
+                </Text>
+              </View>
+            )}
+          </View>
         </SettingSection>
 
         {/* 알림 설정 */}
         <SettingSection title="알림">
-          {permissionStatus === 'denied' ? (
-            <View className="py-4">
-              <Text className="font-sans text-sm text-text-secondary mb-3">
-                알림 권한이 거부되어 있습니다. 알림을 받으려면 설정에서 권한을 허용해주세요.
-              </Text>
-              <Pressable
-                onPress={openSettings}
-                className="bg-accent-green py-3 px-4 rounded-xl items-center"
-              >
-                <Text className="font-heading text-white">설정으로 이동</Text>
-              </Pressable>
-            </View>
-          ) : (
-            <>
-              <SettingToggle
-                title="단식 시작 알림"
-                description="단식이 시작되면 알려드려요"
-                value={notifications.fastingStart}
-                onValueChange={(v) => setNotification('fastingStart', v)}
-              />
-              <SettingToggle
-                title="단식 종료 알림"
-                description="목표 단식 시간에 도달하면 알려드려요"
-                value={notifications.fastingEnd}
-                onValueChange={(v) => setNotification('fastingEnd', v)}
-              />
-              <SettingToggle
-                title="식사 종료 리마인더"
-                description="식사 시간 마감 30분 전에 알려드려요"
-                value={notifications.eatingReminder}
-                onValueChange={(v) => setNotification('eatingReminder', v)}
-              />
-              <SettingToggle
-                title="중간 격려 알림"
-                description="단식 절반 지점에서 응원 메시지를 보내드려요"
-                value={notifications.halfwayCheer}
-                onValueChange={(v) => setNotification('halfwayCheer', v)}
-                showDivider={false}
-              />
-            </>
-          )}
+          <View className="bg-surface border border-border-custom rounded-2xl overflow-hidden">
+            {permissionStatus === 'denied' ? (
+              <View className="p-4">
+                <Text className="font-sans text-sm text-text-secondary mb-3">
+                  알림 권한이 거부되어 있습니다. 알림을 받으려면 설정에서 권한을 허용해주세요.
+                </Text>
+                <Pressable
+                  onPress={openSettings}
+                  className="bg-accent-green py-3 px-4 rounded-xl items-center"
+                >
+                  <Text className="font-heading text-white">설정으로 이동</Text>
+                </Pressable>
+              </View>
+            ) : (
+              <>
+                <SettingToggle
+                  title="단식 시작 알림"
+                  description="단식이 시작되면 알려드려요"
+                  value={notifications.fastingStart}
+                  onValueChange={(v) => handleNotificationChange('fastingStart', v)}
+                />
+                <SettingToggle
+                  title="단식 종료 알림"
+                  description="목표 단식 시간에 도달하면 알려드려요"
+                  value={notifications.fastingEnd}
+                  onValueChange={(v) => handleNotificationChange('fastingEnd', v)}
+                />
+                <SettingToggle
+                  title="식사 종료 리마인더"
+                  description="식사 시간 마감 30분 전에 알려드려요"
+                  value={notifications.eatingReminder}
+                  onValueChange={(v) => handleNotificationChange('eatingReminder', v)}
+                />
+                <SettingToggle
+                  title="중간 격려 알림"
+                  description="단식 절반 지점에서 응원 메시지를 보내드려요"
+                  value={notifications.halfwayCheer}
+                  onValueChange={(v) => handleNotificationChange('halfwayCheer', v)}
+                />
+              </>
+            )}
+          </View>
         </SettingSection>
 
         {/* 데이터 관리 */}

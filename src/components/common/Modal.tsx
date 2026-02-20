@@ -168,7 +168,16 @@ export default function Modal({
   /** 버튼 영역 렌더링 */
   const renderButtons = () => {
     if (type === 'alert') {
-      return <View className="mt-6">{renderConfirmButton()}</View>;
+      return (
+        <Pressable
+          onPress={onConfirm}
+          className={`mt-6 py-3.5 rounded-full items-center justify-center active:opacity-80 ${
+            danger ? 'bg-accent-red' : 'bg-btn-primary'
+          }`}
+        >
+          <Text className="text-white font-heading text-base">{confirmText}</Text>
+        </Pressable>
+      );
     }
 
     return (
