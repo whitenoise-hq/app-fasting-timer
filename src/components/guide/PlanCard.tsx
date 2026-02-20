@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import type { FastingPlan } from '../../types';
+import type { FastingPlan } from '@/types';
 
 interface PlanCardProps {
   plan: FastingPlan;

@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { View, Text, Pressable, Animated } from 'react-native';
-import { THEME, ACCENT } from '../../constants/colors';
+import { THEME, ACCENT } from '@/constants/colors';
 
 const TRACK_WIDTH = 48;
 const TRACK_HEIGHT = 26;

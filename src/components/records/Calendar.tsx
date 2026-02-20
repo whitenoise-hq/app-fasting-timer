@@ -6,8 +6,8 @@ import {
   formatDateKey,
   isToday,
   WEEKDAY_NAMES,
-} from '../../utils/date';
-import { THEME, ACCENT } from '../../constants/colors';
+} from '@/utils/date';
+import { THEME, ACCENT } from '@/constants/colors';
 
 interface CalendarProps {
   /** 현재 표시 연도 */

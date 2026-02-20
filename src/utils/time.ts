@@ -14,9 +14,18 @@ export function formatDuration(ms: number): string {
   ].join(':');
 }
 
-/** ISO 문자열을 "오전/오후 HH:MM" 형태로 변환 */
-export function formatTime(isoString: string): string {
-  const date = new Date(isoString);
+/** 분을 "X시간 Y분" 형태로 변환 */
+export function formatMinutes(minutes: number): string {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  if (hours === 0) return `${mins}분`;
+  if (mins === 0) return `${hours}시간`;
+  return `${hours}시간 ${mins}분`;
+}
+
+/** Date 또는 ISO 문자열을 "오전/오후 HH:MM" 형태로 변환 */
+export function formatTime(dateOrIso: Date | string): string {
+  const date = typeof dateOrIso === 'string' ? new Date(dateOrIso) : dateOrIso;
   const hours = date.getHours();
   const minutes = date.getMinutes();
   const period = hours < 12 ? '오전' : '오후';

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import type { FastingRecord } from '../../types';
-import { ACCENT } from '../../constants/colors';
+import type { FastingRecord } from '@/types';
+import { ACCENT } from '@/constants/colors';
+import { formatMinutes, formatTime } from '@/utils/time';
 import { Modal } from '../common';
 
 interface DayDetailProps {
@@ -14,28 +15,9 @@ interface DayDetailProps {
   onDeleteRecord: (recordId: string) => void;
 }
 
-/** 분을 시간:분 형태로 변환 */
-function formatMinutes(minutes: number): string {
-  const hours = Math.floor(minutes / 60);
-  const mins = minutes % 60;
-  if (hours === 0) return `${mins}분`;
-  if (mins === 0) return `${hours}시간`;
-  return `${hours}시간 ${mins}분`;
-}
-
-/** ISO 문자열을 시간 형태로 변환 */
-function formatTimeFromISO(isoString: string): string {
-  const date = new Date(isoString);
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const period = hours < 12 ? '오전' : '오후';
-  const displayHours = hours % 12 || 12;
-  return `${period} ${displayHours}:${minutes.toString().padStart(2, '0')}`;
-}
-
 /** 날짜 키를 표시용 문자열로 변환 */
 function formatDateDisplay(dateKey: string): string {
-  const [year, month, day] = dateKey.split('-');
+  const [, month, day] = dateKey.split('-');
   return `${parseInt(month)}월 ${parseInt(day)}일`;
 }
 
@@ -136,13 +118,13 @@ export default function DayDetail({ dateKey, records, onDeleteRecord }: DayDetai
             <View className="flex-1">
               <Text className="font-sans text-xs text-text-muted mb-1">시작</Text>
               <Text className="font-sans text-sm text-text-primary">
-                {formatTimeFromISO(record.startTime)}
+                {formatTime(record.startTime)}
               </Text>
             </View>
             <View className="flex-1">
               <Text className="font-sans text-xs text-text-muted mb-1">종료</Text>
               <Text className="font-sans text-sm text-text-primary">
-                {record.endTime ? formatTimeFromISO(record.endTime) : '-'}
+                {record.endTime ? formatTime(record.endTime) : '-'}
               </Text>
             </View>
             <View className="flex-1">

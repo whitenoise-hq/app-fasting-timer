@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { ACCENT } from '../../constants/colors';
+import { ACCENT } from '@/constants/colors';
 
 interface Warning {
   id: string;

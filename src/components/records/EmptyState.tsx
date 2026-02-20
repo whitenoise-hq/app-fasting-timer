@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
 import Svg, { Path, Circle } from 'react-native-svg';
-import { THEME } from '../../constants/colors';
+import { THEME } from '@/constants/colors';
 
 /** 기록이 없을 때 표시되는 빈 상태 UI */
 export default function EmptyState() {

@@ -3,9 +3,9 @@ import { View, ScrollView } from 'react-native';
 import type { ScrollView as ScrollViewType } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from 'expo-router';
-import { Calendar, DayDetail, WeeklyStats } from '../../src/components/records';
-import { useFastingRecords } from '../../src/hooks/useFastingRecords';
-import { formatDateKey } from '../../src/utils/date';
+import { Calendar, DayDetail, WeeklyStats } from '@/components/records';
+import { useFastingRecords } from '@/hooks/useFastingRecords';
+import { formatDateKey } from '@/utils/date';
 
 export default function RecordsScreen() {
   const {

@@ -9,13 +9,13 @@ import {
   SettingToggle,
   PlanSelector,
   DangerButton,
-} from '../../src/components/settings';
-import { useSettingsStore } from '../../src/stores/settingsStore';
-import { useTimerStore } from '../../src/stores/timerStore';
-import { useNotification, PermissionStatus } from '../../src/hooks/useNotification';
-import { THEME } from '../../src/constants/colors';
-import { getPlanById } from '../../src/constants/plans';
-import type { NotificationSettings, FastingPlan } from '../../src/types';
+} from '@/components/settings';
+import { useSettingsStore } from '@/stores/settingsStore';
+import { useTimerStore } from '@/stores/timerStore';
+import { useNotification, PermissionStatus } from '@/hooks/useNotification';
+import { THEME } from '@/constants/colors';
+import { getPlanById } from '@/constants/plans';
+import type { NotificationSettings, FastingPlan } from '@/types';
 
 const APP_VERSION = '1.0.0';
 

@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { View, Text, Pressable, TextInput } from 'react-native';
-import { DEFAULT_PLANS } from '../../constants/plans';
+import { DEFAULT_PLANS } from '@/constants/plans';
 import { Modal } from '../common';
-import type { FastingPlan } from '../../types';
+import type { FastingPlan } from '@/types';
 
 interface PlanSelectorProps {
   /** 저장된 플랜 ID */

@@ -1,5 +1,6 @@
 import { View, Text } from 'react-native';
-import type { FastingStats } from '../../types';
+import type { FastingStats } from '@/types';
+import { formatMinutes } from '@/utils/time';
 
 interface WeeklyStatsProps {
   /** 전체 통계 */
@@ -11,15 +12,6 @@ interface WeeklyStatsProps {
     successRate: number;
     averageDuration: number;
   };
-}
-
-/** 분을 시간:분 형태로 변환 */
-function formatMinutes(minutes: number): string {
-  const hours = Math.floor(minutes / 60);
-  const mins = minutes % 60;
-  if (hours === 0) return `${mins}분`;
-  if (mins === 0) return `${hours}시간`;
-  return `${hours}시간 ${mins}분`;
 }
 
 /** 주간 통계 카드 */

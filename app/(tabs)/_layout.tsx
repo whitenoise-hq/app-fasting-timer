@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { THEME } from '../../src/constants/colors';
+import { THEME } from '@/constants/colors';
 
 interface TabIconProps {
   color: string;

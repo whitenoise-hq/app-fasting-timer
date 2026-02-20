@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { THEME } from '../../constants/colors';
+import { THEME } from '@/constants/colors';
 
 interface FAQ {
   id: string;

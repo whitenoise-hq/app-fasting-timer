@@ -10,15 +10,15 @@ import {
   TimeWindowCard,
   WarningCard,
   FAQItem,
-} from '../../src/components/guide';
-import { DEFAULT_PLANS } from '../../src/constants/plans';
+} from '@/components/guide';
+import { DEFAULT_PLANS } from '@/constants/plans';
 import {
   ALLOWED_ITEMS,
   FORBIDDEN_ITEMS,
   RECOMMENDED_EATING_WINDOWS,
   WARNINGS,
   FAQ_ITEMS,
-} from '../../src/constants/guide';
+} from '@/constants/guide';
 
 export default function GuideScreen() {
   const scrollViewRef = useRef<ScrollViewType>(null);
