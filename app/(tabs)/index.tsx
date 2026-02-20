@@ -4,8 +4,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Circle, Path } from 'react-native-svg';
 import { useTimerStore } from '../../src/stores/timerStore';
 import { useSettingsStore } from '../../src/stores/settingsStore';
-import { getPlanById } from '../../src/constants/plans';
+import { getPlanById, DEFAULT_PLANS } from '../../src/constants/plans';
 import { THEME, ACCENT } from '../../src/constants/colors';
+import { useNotification } from '../../src/hooks/useNotification';
+import type { FastingPlan } from '../../src/types';
 
 /** 밀리초를 시:분:초 형태로 변환 */
 function formatDuration(ms: number): string {
@@ -32,7 +34,8 @@ function formatTime(date: Date): string {
 
 export default function HomeScreen() {
   const { status, startTime, targetEndTime, startFasting, stopFasting } = useTimerStore();
-  const { selectedPlanId, customFastingHours } = useSettingsStore();
+  const { selectedPlanId, customFastingHours, customEatingHours, notifications } = useSettingsStore();
+  const { scheduleNotifications, cancelAllNotifications } = useNotification();
 
   const [remainingMs, setRemainingMs] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -41,8 +44,19 @@ export default function HomeScreen() {
   // 플랜 정보 도출
   const plan = getPlanById(selectedPlanId);
   const fastingHours = plan?.fastingHours ?? customFastingHours ?? 16;
+  const eatingHours = plan?.eatingHours ?? customEatingHours ?? 8;
   const planName = plan?.name ?? `${customFastingHours ?? 16}:${24 - (customFastingHours ?? 16)}`;
   const planLabel = plan?.label ?? '커스텀';
+
+  // 알림 스케줄링용 플랜 객체 생성
+  const currentPlan: FastingPlan = plan ?? {
+    id: 'custom',
+    name: planName,
+    label: planLabel,
+    fastingHours,
+    eatingHours,
+    description: '커스텀 플랜',
+  };
 
   const isFasting = status === 'fasting';
   const statusText = isFasting ? '단식 중' : '대기 중';
@@ -94,14 +108,19 @@ export default function HomeScreen() {
   }, [isFasting, updateTimerState]);
 
   /** 단식 시작 */
-  const handleStart = () => {
+  const handleStart = async () => {
+    const now = new Date().toISOString();
     startFasting(fastingHours);
+    // 알림 스케줄링
+    await scheduleNotifications(now, currentPlan, notifications);
   };
 
   /** 단식 종료 */
-  const handleStop = () => {
+  const handleStop = async () => {
     const completed = remainingMs <= 0;
     stopFasting(completed, selectedPlanId);
+    // 예약된 알림 취소
+    await cancelAllNotifications();
   };
 
   // 원형 타이머 계산
