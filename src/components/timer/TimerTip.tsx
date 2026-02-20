@@ -20,7 +20,7 @@ export default function TimerTip({ status }: TimerTipProps) {
   const tip = TIPS[status];
 
   return (
-    <View className="flex-row items-center bg-accent-blue/10 rounded-xl px-4 py-3">
+    <View className="flex-row items-center bg-accent-blue/20 rounded-xl px-4 py-3">
       {/* 전구 아이콘 */}
       <View className="mr-3">
         <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">

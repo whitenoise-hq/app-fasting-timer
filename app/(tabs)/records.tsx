@@ -80,7 +80,7 @@ export default function RecordsScreen() {
   const showDayDetail = selectedDate.length > 0;
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
+    <SafeAreaView className="flex-1 bg-background" edges={['top', 'left', 'right']}>
       <ScrollView
         ref={scrollViewRef}
         className="flex-1"

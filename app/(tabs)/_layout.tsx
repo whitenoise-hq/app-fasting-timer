@@ -83,9 +83,15 @@ export default function TabLayout() {
         tabBarStyle: {
           backgroundColor: THEME.surface,
           borderTopColor: THEME.border,
-          height: 60 + insets.bottom,
-          paddingBottom: 8 + insets.bottom,
-          paddingTop: 8,
+          borderTopWidth: 1,
+          elevation: 0,
+          shadowOpacity: 0,
+          height: 56 + insets.bottom,
+          paddingBottom: insets.bottom,
+          paddingTop: 6,
+        },
+        sceneStyle: {
+          backgroundColor: THEME.background,
         },
         tabBarLabelStyle: {
           fontSize: 12,

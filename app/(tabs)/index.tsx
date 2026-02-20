@@ -246,7 +246,7 @@ export default function HomeScreen() {
     : '오늘도 건강한 단식을 시작해보세요!';
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
+    <SafeAreaView className="flex-1 bg-background" edges={['top', 'left', 'right']}>
       <View className="flex-1 px-6 py-4">
         {/* 날짜 표시 */}
         <View className="items-center pt-10 pb-4">
@@ -308,7 +308,7 @@ export default function HomeScreen() {
         {/* 하단 영역 */}
         <View className="gap-4 pb-4">
           {/* 팁 */}
-          <View className="flex-row items-center bg-accent-blue/10 rounded-xl px-4 py-3">
+          <View className="flex-row items-center bg-accent-blue/20 rounded-xl px-4 py-3">
             <Svg width={20} height={20} viewBox="0 0 24 24" fill="none" className="mr-3">
               <Path
                 d="M9 21h6M12 3a6 6 0 00-4 10.47V17a1 1 0 001 1h6a1 1 0 001-1v-3.53A6 6 0 0012 3z"
