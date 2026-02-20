@@ -15,6 +15,7 @@ import { useTimerStore } from '@/stores/timerStore';
 import { useNotification, PermissionStatus } from '@/hooks/useNotification';
 import { THEME } from '@/constants/colors';
 import { getPlanById } from '@/constants/plans';
+import { LINKS } from '@/constants/links';
 import type { NotificationSettings, FastingPlan } from '@/types';
 
 const APP_VERSION = '1.0.0';
@@ -203,10 +204,23 @@ export default function SettingsScreen() {
         </SettingSection>
 
         {/* 앱 정보 */}
-        <View className="items-center py-6">
+        <View className="items-center py-1">
           <Text className="font-sans text-sm text-text-muted">
-            단식 타이머 v{APP_VERSION}
+            Fasty: 단식 타이머 v{APP_VERSION}
           </Text>
+          <View className="flex-row items-center mt-3">
+            <Pressable onPress={() => Linking.openURL(LINKS.PRIVACY_POLICY)}>
+              <Text className="font-sans text-[13px] text-text-secondary underline">
+                개인정보 처리방침
+              </Text>
+            </Pressable>
+            <Text className="font-sans text-[13px] text-text-muted mx-2">|</Text>
+            <Pressable onPress={() => Linking.openURL(LINKS.TERMS_OF_SERVICE)}>
+              <Text className="font-sans text-[13px] text-text-secondary underline">
+                이용약관
+              </Text>
+            </Pressable>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

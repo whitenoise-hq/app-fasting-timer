@@ -24,7 +24,7 @@ export const DEFAULT_PLANS: FastingPlan[] = [
   },
   {
     id: '14-10',
-    name: '14:10',
+    name: '14:10 단식',
     label: '초보자용',
     fastingHours: 14,
     eatingHours: 10,
@@ -32,15 +32,15 @@ export const DEFAULT_PLANS: FastingPlan[] = [
   },
   {
     id: '16-8',
-    name: '16:8',
-    label: '가장 권장',
+    name: '16:8 단식',
+    label: '가장 권장!',
     fastingHours: 16,
     eatingHours: 8,
     description: '오전 11시 ~ 오후 7시 식사',
   },
   {
     id: '23-1',
-    name: '23:1',
+    name: '23:1 단식',
     label: '1일 1식',
     fastingHours: 23,
     eatingHours: 1,
