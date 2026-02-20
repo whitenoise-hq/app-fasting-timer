@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Fasty: 단식 타이머",
+    "name": "Fasty: 간헐적 단식 타이머",
     "slug": "fasting-timer",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,9 +8,9 @@
     "userInterfaceStyle": "automatic",
     "scheme": "fasting-timer",
     "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#22c55e"
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#F7F7F7"
     },
     "ios": {
       "supportsTablet": true,

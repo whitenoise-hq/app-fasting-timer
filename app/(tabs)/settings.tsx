@@ -206,7 +206,7 @@ export default function SettingsScreen() {
         {/* 앱 정보 */}
         <View className="items-center py-1">
           <Text className="font-sans text-sm text-text-muted">
-            Fasty: 단식 타이머 v{APP_VERSION}
+            Fasty v{APP_VERSION}
           </Text>
           <View className="flex-row items-center mt-3">
             <Pressable onPress={() => Linking.openURL(LINKS.PRIVACY_POLICY)}>
