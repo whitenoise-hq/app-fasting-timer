@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, Pressable, AppState, AppStateStatus } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import Svg, { Circle, Path } from 'react-native-svg';
 import { useTimerStore } from '../../src/stores/timerStore';
 import { useSettingsStore } from '../../src/stores/settingsStore';
-import { getPlanById, DEFAULT_PLANS } from '../../src/constants/plans';
+import { getPlanById } from '../../src/constants/plans';
 import { THEME, ACCENT } from '../../src/constants/colors';
 import { useNotification } from '../../src/hooks/useNotification';
+import { Modal } from '../../src/components/common';
 import type { FastingPlan } from '../../src/types';
 
 /** 밀리초를 시:분:초 형태로 변환 */
@@ -33,12 +35,14 @@ function formatTime(date: Date): string {
 }
 
 export default function HomeScreen() {
+  const router = useRouter();
   const { status, startTime, targetEndTime, startFasting, stopFasting } = useTimerStore();
   const { selectedPlanId, customFastingHours, customEatingHours, notifications } = useSettingsStore();
   const { scheduleNotifications, cancelAllNotifications } = useNotification();
 
   const [remainingMs, setRemainingMs] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [showEndModal, setShowEndModal] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // 플랜 정보 도출
@@ -121,6 +125,14 @@ export default function HomeScreen() {
     stopFasting(completed, selectedPlanId);
     // 예약된 알림 취소
     await cancelAllNotifications();
+    // 종료 모달 표시
+    setShowEndModal(true);
+  };
+
+  /** 기록 보기 (모달 확인) */
+  const handleViewRecords = () => {
+    setShowEndModal(false);
+    router.push('/records');
   };
 
   // 원형 타이머 계산
@@ -242,6 +254,19 @@ export default function HomeScreen() {
           </Pressable>
         </View>
       </View>
+
+      {/* 단식 종료 모달 */}
+      <Modal
+        visible={showEndModal}
+        type="confirm"
+        emoji="🎉"
+        title="단식이 종료되었습니다"
+        message="기록을 확인해보세요"
+        confirmText="기록 보기"
+        cancelText="닫기"
+        onConfirm={handleViewRecords}
+        onCancel={() => setShowEndModal(false)}
+      />
     </SafeAreaView>
   );
 }
