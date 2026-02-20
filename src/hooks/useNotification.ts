@@ -1,12 +1,18 @@
-import { useEffect, useCallback, useRef } from 'react';
-import * as Notifications from 'expo-notifications';
-import type { NotificationSettings, FastingPlan } from '../types';
+import { useCallback, useRef } from 'react';
+import Constants from 'expo-constants';
+import type { NotificationSettings, FastingPlan } from '@/types';
+
+/** Expo Go 환경인지 확인 */
+const isExpoGo = Constants.appOwnership === 'expo';
 
 /** 알림 ID 저장 타입 */
 interface ScheduledNotificationIds {
   fastingEnd: string | null;
   eatingReminder: string | null;
 }
+
+/** 알림 권한 상태 */
+export type PermissionStatus = 'granted' | 'denied' | 'undetermined';
 
 /** 알림 메시지 */
 const NOTIFICATION_MESSAGES = {
@@ -20,25 +26,33 @@ const NOTIFICATION_MESSAGES = {
   },
 };
 
-/** 포그라운드 알림 설정 */
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+// Expo Go에서는 알림 모듈을 로드하지 않음
+let Notifications: typeof import('expo-notifications') | null = null;
 
-/** 알림 권한 상태 */
-export type PermissionStatus = 'granted' | 'denied' | 'undetermined';
+if (!isExpoGo) {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const NotificationsModule = require('expo-notifications') as typeof import('expo-notifications');
+  Notifications = NotificationsModule;
+
+  /** 포그라운드 알림 설정 */
+  NotificationsModule.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+      shouldShowBanner: true,
+      shouldShowList: true,
+    }),
+  });
+}
 
 /**
  * 푸시 알림 관리 훅
  * - 권한 요청
  * - 알림 스케줄링
  * - 알림 취소
+ *
+ * Expo Go에서는 알림 기능이 비활성화됩니다.
  */
 export function useNotification() {
   const scheduledIdsRef = useRef<ScheduledNotificationIds>({
@@ -48,6 +62,10 @@ export function useNotification() {
 
   /** 알림 권한 요청 */
   const requestPermissions = useCallback(async (): Promise<PermissionStatus> => {
+    if (!Notifications) {
+      return 'undetermined';
+    }
+
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
 
     if (existingStatus === 'granted') {
@@ -60,12 +78,20 @@ export function useNotification() {
 
   /** 현재 권한 상태 확인 */
   const getPermissionStatus = useCallback(async (): Promise<PermissionStatus> => {
+    if (!Notifications) {
+      return 'undetermined';
+    }
+
     const { status } = await Notifications.getPermissionsAsync();
     return status as PermissionStatus;
   }, []);
 
   /** 모든 예약된 알림 취소 */
   const cancelAllNotifications = useCallback(async () => {
+    if (!Notifications) {
+      return;
+    }
+
     await Notifications.cancelAllScheduledNotificationsAsync();
     scheduledIdsRef.current = {
       fastingEnd: null,
@@ -79,6 +105,10 @@ export function useNotification() {
       key: keyof ScheduledNotificationIds,
       triggerDate: Date
     ): Promise<string | null> => {
+      if (!Notifications) {
+        return null;
+      }
+
       const now = Date.now();
       const triggerTime = triggerDate.getTime();
 
@@ -117,6 +147,10 @@ export function useNotification() {
       plan: FastingPlan,
       settings: NotificationSettings
     ) => {
+      if (!Notifications) {
+        return;
+      }
+
       // 기존 알림 취소
       await cancelAllNotifications();
 
